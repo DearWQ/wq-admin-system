@@ -1,0 +1,489 @@
+<script lang="ts" setup>
+
+import {onMounted, ref, watch} from "vue";
+import {formatDate, getCurDay} from "@/utils";
+
+const props = defineProps({
+  planList: {
+    type: Array,
+    default: []
+  },
+  //卡片状态
+  cardStatus: {
+    type: Object,
+    default: () => {
+      return {
+        1: {
+          title: '已过期',
+          color: '#9CADADB7'
+        },
+        2: {
+          title: '进行中',
+          color: '#FF6200'
+        },
+        3: {
+          title: '未开始',
+          color: '#3291F8'
+        },
+      }
+    }
+  },
+  //第一列是星期几
+  isFirstDayOfMondayOrSunday: {
+    type: Number,
+    default: 1,
+  },
+  hasNumExpend: {
+    type: Number,
+    default: 2
+  }
+})
+
+const weeks = ref([
+  '时段', '周一', '周二', '周三', '周四', '周五', '周六', '周日',
+])
+const todayDate = ref('')
+const months = ref([])
+const curDate = ref()
+const nowDate = ref(new Date())
+
+
+watch(() => props.isFirstDayOfMondayOrSunday, (val) => {
+  if (val > 1) {
+    let arr = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+    const arr1 = arr.slice(val - 1)
+    const arr2 = arr.slice(0, val - 1)
+    weeks.value = ['时段', ...arr1, ...arr2]
+  }
+}, {immediate: true})
+//展开与缩放操作
+const handleExpand = (row) => {
+  row.isExpend = !row.isExpend
+}
+/**
+ * 获取 时间
+ * @param time
+ */
+const getWeek = (time) => {
+  curDate.value = new Date(time)
+  //当前是周几
+  const whichDay = time.getDay()
+  let num = 0
+  if (props.isFirstDayOfMondayOrSunday <= whichDay) {
+    num = props.isFirstDayOfMondayOrSunday
+  } else {
+    num = props.isFirstDayOfMondayOrSunday - 7
+  }
+  const weekDay = time.getDay() - num
+  time = addDate(time, weekDay * -1)
+  for (let i = 0; i < 7; i++) {
+    const {year, month, day} = formatDate(i === 0 ? time : addDate(time, 1))
+    months.value.push({
+      date: `${year}-${month}-${day}`,
+      showDate: `${month}-${day}`,
+      timestamp: new Date(`${year}-${month}-${day}`).getTime()
+    })
+  }
+  months.value.sort((a, b) => a.timestamp - b.timestamp)
+  delete months.value[0]
+  todayDate.value = `${months.value[1].date} ~ ${months.value[months.value.length - 1].date}`
+}
+/**
+ * 处理日期
+ * @param date
+ * @param n
+ * @returns {*}
+ */
+const addDate = (date, n) => {
+  date.setDate(date.getDate() + n)
+  return date
+}
+
+const emit = defineEmits(['handleDetail', 'handleCardDetail', 'changeWeek'])
+/**
+ * 上周
+ */
+const getLastWeek = () => {
+  const date = addDate(curDate.value, -7),
+      {year, month, day} = formatDate(date),
+      dateObj = {
+        date: `${year}-${month}-${day}`,
+        timestamp: new Date(`${year}-${month}-${day}`).getTime()
+      }
+  dealDate(date)
+  emit('changeWeek', dateObj)
+}
+/**
+ * 本周
+ */
+const getCurWeek = () => {
+  const {year, month, day} = formatDate(new Date()),
+      dateObj = {
+        date: `${year}-${month}-${day}`,
+        timestamp: new Date(`${year}-${month}-${day}`).getTime()
+      }
+  dealDate(new Date())
+  emit('changeWeek', dateObj)
+}
+/**
+ * 下周
+ */
+const getNextWeek = () => {
+  const date = addDate(curDate.value, 7),
+      {year, month, day} = formatDate(date),
+      dateObj = {
+        date: `${year}-${month}-${day}`,
+        timestamp: new Date(`${year}-${month}-${day}`).getTime()
+      }
+  dealDate(date)
+  emit('changeWeek', dateObj)
+}
+/**
+ * 显示当天日期状态
+ * @param date
+ */
+const dealDate = (date) => {
+  months.value = ['']
+  getWeek(date)
+  const curDate = getCurDay()
+  months.value.forEach(item => {
+    item.isCurDate = item.date === curDate
+  })
+}
+
+
+/**
+ * 点击卡片子内容查看详情
+ * @param row
+ */
+const handleDetail = (row) => {
+  emit('handleDetail', row)
+}
+/**
+ * 点击卡片查看全部内容
+ * @param month
+ * @param period
+ */
+const handleCardDetail = (month, period) => {
+  emit('handleCardDetail', {...month, ...period})
+}
+
+onMounted(() => {
+  getCurWeek()
+})
+
+</script>
+
+<template>
+
+  <div class="course-week">
+    <div class="week-top">
+      <div class="week-btn-wrap">
+        <span @click="getLastWeek">上周</span>
+        <span @click="getCurWeek">本周</span>
+        <span @click="getNextWeek">下周</span>
+      </div>
+      <span class="w-today-date"> {{ todayDate }}</span>
+      <div class="w-choose-status">
+        <div v-for="sta in cardStatus">
+          <span :style="{background:sta.color}" class="square"></span>
+          <span class="title">{{ sta.title }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="week-table">
+      <div class="table-header">
+        <div class="table-week">
+          <template v-for="(item,index) of weeks">
+            <span v-if="index===0" :key="index" class="w-first">{{ item }}</span>
+            <span v-else :key="item+index">{{ item }}</span>
+          </template>
+        </div>
+        <div class="w-table-date">
+          <template v-for="(item,index) of months">
+            <span v-if="index===0" :key="index" class="w-first">
+            </span>
+            <template v-else>
+              <span :key="index" :class="{'w-isCurDate':item&&item.isCurDate}" class="w-day-item">
+                {{ `${item && item.isCurDate ? item && item.showDate + '(今天)' || '' : item && item.showDate || ''}` }}
+              </span>
+            </template>
+          </template>
+        </div>
+      </div>
+      <div class="w-time-period-list">
+        <ul class="w-time-period-row">
+          <!--循环时段，看时段有多少个-->
+          <template v-if="planList.length>0">
+            <li v-for="(period,p_index) in planList" :key="`period${p_index}`"
+                class="w-time-period-col">
+              <!--第一列显示时段-->
+              <div class="w-time-period"> {{ period.timePeriod }}</div>
+              <!-- 后面显示周一到周日的计划-->
+              <div class="w-row-day">
+                <!-- 循环显示每周的日期-->
+                <template v-for="(month,m_index) of months">
+                  <!-- v-if="month" 去除数据处理的时候移除数组第一个为empty的问题-->
+                  <div v-if="month" :key="`month${m_index}`" class="w-things" @click="handleCardDetail(month,period)">
+                    <!-- 循环每个时间段的计划-->
+                    <template v-for="(card,t_index) of period.schedule">
+                      <template v-for="(single,sIndex) in card[month.date]">
+
+                        <template v-if="!card.isExpend">
+                          <div v-if="single.date===month.date&&sIndex<hasNumExpend"
+                               :key="`thing${sIndex}`"
+                               :style="{background: cardStatus[single.status].color}"
+                               class="w-thing-item"
+                               @click="handleDetail(single)">
+                            <slot :row="single" name="thing"></slot>
+                          </div>
+                        </template>
+                        <template v-if="card.isExpend">
+                          <div v-if="single.date===month.date"
+                               :key="`thing${sIndex}`"
+                               :style="{background: cardStatus[single.status].color}"
+                               class="w-thing-item"
+                               @click="handleDetail(single)">
+                            <slot :row="single" name="thing"></slot>
+                          </div>
+                        </template>
+                        <div v-if="card[month.date].length>hasNumExpend&&(card[month.date].length-1)===sIndex&&!card.isExpend&&single.date===month.date"
+                             class="w_expand"
+                             @click="handleExpand(card)">展开
+                        </div>
+                        <div v-if="card[month.date].length>hasNumExpend&&(card[month.date].length-1)===sIndex&&card.isExpend&&single.date===month.date"
+                             class="w_shrink"
+                             @click="handleExpand(card)">收缩
+                        </div>
+                      </template>
+                    </template>
+                  </div>
+                </template>
+              </div>
+            </li>
+          </template>
+          <div v-else class="w-noMore"><span>暂无数据</span></div>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style lang="less" scoped>
+ul {
+  list-style: none;
+}
+
+ul, li {
+  margin: 0;
+  padding: 0;
+}
+
+.course-week {
+  background: #fff;
+  width: 100%;
+  border: 1px solid #ddd;
+  padding: 1%;
+  box-sizing: border-box;
+}
+
+.week-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  padding: 0 1%;
+  box-sizing: border-box;
+
+}
+
+.week-top .week-btn-wrap {
+  width: 200px;
+  display: flex;
+  justify-content: space-around;
+  color: #409EFF;
+}
+
+.week-top .week-btn-wrap span {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+}
+
+.w-today-date {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.w-choose-status {
+  display: flex;
+  justify-content: flex-end;
+  width: 200px;
+}
+
+.w-choose-status > div {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  padding: 0 2%;
+  white-space: nowrap;
+  line-height: 20px;
+  box-sizing: border-box;
+}
+
+.w-choose-status > div .square {
+  display: flex;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.w-choose-status > div .title {
+  display: flex;
+  align-items: center;
+  line-height: 16px;
+  padding-left: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+
+.week-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.week-table .table-header {
+  width: 100%;
+  height: 80px;
+  background: #EAEDF2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid #EAEDF2;
+  box-sizing: border-box;
+}
+
+.table-header .w-table-date, .table-week {
+  width: 100%;
+  height: 40px;
+  text-align: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.table-header .w-table-date > span, .table-week > span {
+  flex: 1;
+  color: #000;
+  height: 100%;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+
+.w-table-date .w-day-item, .table-week .w-day-item {
+  color: #000;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.week-table .w-time-period-list {
+  width: 100%;
+}
+
+.w-time-period-list .w-time-period-row {
+  width: 100%;
+  min-height: 60px;
+}
+
+.w-time-period-col {
+  width: 100%;
+  min-height: 60px;
+  display: flex;
+}
+
+.w-time-period-col .w-time-period {
+  width: 12.5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-left: 1px solid #EAEDF2;
+  border-bottom: 1px solid #EAEDF2;
+  box-sizing: border-box;
+}
+
+.w-time-period-col .w-row-day {
+  width: 87.5%;
+  display: flex;
+  justify-content: center;
+}
+
+.w-row-day .w-things {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-left: 1px solid #EAEDF2;
+  border-bottom: 1px solid #EAEDF2;
+  box-sizing: border-box;
+}
+
+.w-row-day .w-things:last-child {
+  border-right: 1px solid #EAEDF2;
+}
+
+.w-things .w-thing-item {
+  display: flex;
+  width: 80%;
+  font-size: 14px;
+  flex-direction: column;
+  justify-content: space-around;
+  min-height: 90px;
+  border-radius: 10px;
+  margin: 2% 1%;
+  padding: 1% 2%;
+  cursor: pointer;
+  color: #fff;
+  background: #FF6200;
+  box-sizing: border-box;
+  transition: all 1s linear .5s;
+}
+
+
+.w-isCurDate {
+  color: #FF2525 !important;
+}
+
+.w-noMore {
+  min-height: 200px;
+  padding: 2%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgba(156, 173, 173, 0.3);
+  color: #9CADADB7;
+  box-sizing: border-box;
+}
+
+.w_expand, .w_shrink {
+  color: #0A98D5;
+  cursor: pointer;
+  width: 100%;
+  padding: 2% 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+</style>
