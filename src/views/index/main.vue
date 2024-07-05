@@ -15,8 +15,8 @@
         <DataItem :data-model="item">
           <template v-if="index === 0" #extra="{ extra }">
             <div class="mt-4 text-xs">
-              <div>昨天在线人数：{{ extra.data }} 人</div>
-              <div class="mt-2"> 今天在线人数{{ extra.data1 }} 人</div>
+              <div>昨天访问人数：{{ extra.data }} 人</div>
+              <div class="mt-2"> 今天访问人数{{ extra.data1 }} 人</div>
             </div>
           </template>
           <template v-else-if="index === 1" #extra="{ extra }">
@@ -95,10 +95,10 @@
   const dataList =  [
     {
       id: 'visited',
-      title: '线上总内容',
-      data: '1000',
+      title: '今日访问人数',
+      data: '5000',
       prefix: '+',
-      bottomTitle: '总访问量',
+      bottomTitle: '访问人数比较',
       totalSum: '100万+',
       icon: 'icon-face-smile-fill',
       color: '#1890ff',
@@ -109,10 +109,10 @@
     },
     {
       id: 'newAdd',
-      title: '投放中内容',
+      title: '使用系统人数',
       data: '500',
       prefix: '+',
-      bottomTitle: '总用户量',
+      bottomTitle: '周使用人数',
       totalSum: '200万+',
       icon: 'icon-heart-fill',
       color: '#ff0000',
@@ -123,10 +123,10 @@
     },
     {
       id: 'sales',
-      title: '日新增评论',
+      title: '打赏总金额',
       data: '50000',
       prefix: '￥',
-      bottomTitle: '累计销售额',
+      bottomTitle: '打赏系统金额',
       totalSum: '2000万+',
       color: '#18e3ff',
       icon: 'icon-star-fill',
@@ -136,10 +136,10 @@
     },
     {
       id: 'order',
-      title: '较昨日新增',
+      title: '打赏次数',
       data: '189',
       suffix: '笔',
-      bottomTitle: '累计订单量',
+      bottomTitle: '初秋寄友人',
       totalSum: '1万+',
       color: '#bbc314',
       icon: 'icon-sun-fill',

@@ -1,6 +1,6 @@
 import { DeviceType } from '@/store/types';
 
-export const projectName = 'vue3后台管理系统';
+export const projectName = 'wq-admin-system';
 
 export default {
   theme: 'light',

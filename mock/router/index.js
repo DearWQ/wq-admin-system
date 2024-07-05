@@ -61,19 +61,19 @@ export const adminRoutes = [
   },
   {
     menuUrl: '/list',
-    menuName: '常见表格',
+    menuName: '常见Table',
     icon: 'icon-list',
     parentPath: '',
     children: [
       {
         parentPath: '/list',
         menuUrl: '/list/table-with-search',
-        menuName: '表格搜索',
+        menuName: 'Table搜索',
       },
       {
         parentPath: '/list',
         menuUrl: '/list/table-custom',
-        menuName: '自定义表格',
+        menuName: '自定义Table',
       },
       {
         parentPath: '/list',

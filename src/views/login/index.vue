@@ -1,11 +1,30 @@
 <template>
   <div class="login-container">
     <div class="left">
-      <img :src="imageBg" />
       <div class="content">
         <img style="border-radius: 50%" :src="logo" />
         <div class="project-name">{{ projectName }}</div>
-        <div class="desc">Vue3 + Vite2 + Typescript + Arco Design</div>
+        <div class="login-logo">
+          <img alt="" src="https://www.yilailu.com/static/icon/designer.png">
+          <div class="desc">
+            <em>场景</em>
+            <p>记录遇到过的场景</p>
+          </div>
+        </div>
+        <div class="login-tip">
+          <img alt="衣来录" src="https://www.yilailu.com/static/icon/statistical.png">
+          <div class="desc">
+            <em>组件化</em>
+            <p>把场景封装组件化</p>
+          </div>
+        </div>
+        <div class="login-tip">
+          <img alt="衣来录" src="https://www.yilailu.com/static/icon/print.png">
+          <div class="desc">
+            <em>便捷</em>
+            <p>直接使用或自行改造</p>
+          </div>
+        </div>
         <div class="ttiipp"> 井底的蜗牛 </div>
       </div>
     </div>
@@ -40,9 +59,10 @@
         </div>
         <a-divider orientation="center">第三方登录</a-divider>
         <div class="text-center text-lg">
-          <icon-alipay-circle />
-          <icon-github class="mr-6 ml-6" />
-          <icon-weibo-circle-fill />
+<!--          <icon-alipay-circle />-->
+          <a href="https://github.com/DearWQ/wq-admin-system"><icon-github class="mr-6 ml-6"  /></a>
+
+<!--          <icon-weibo-circle-fill />-->
         </div>
       </a-card>
     </div>
@@ -147,10 +167,11 @@
         display: flex;
         align-items: center;
         flex-direction: column;
+        //background: linear-gradient(214deg, #dffbff, #faf6f3);
         & > img {
           width: 70px;
           height: 70px;
-          margin-top: 20%;
+          margin-top: 100px;
         }
         .project-name {
           font-size: 20px;
@@ -160,13 +181,73 @@
           // font-weight: 700;
           margin-top: 10px;
         }
-        .desc {
-          font-size: 14px;
-          color: #fff;
-          margin-top: 10px;
+        .login-logo {
+          padding-left: 16px;
+          display: flex;
+          height: 42px;
+          margin-top: 30px;
+          box-sizing: border-box;
+
+          img {
+            width: 42px;
+            height: 42px;
+          }
+
+          .desc {
+            margin-left: 16px;
+
+            em {
+              display: block;
+              font-size: 14px;
+              font-weight: bold;
+              font-style: normal;
+              color: #fff;
+              line-height: 20px;
+            }
+
+            p {
+              font-size: 14px;
+              color: #fff;
+              line-height: 20px;
+              margin-top: 2px;
+            }
+          }
+        }
+
+        .login-tip {
+          padding-left: 16px;
+          display: flex;
+          height: 42px;
+          margin-top: 30px;
+          box-sizing: border-box;
+
+          img {
+            width: 42px;
+            height: 42px;
+          }
+
+          .desc {
+            margin-left: 16px;
+
+            em {
+              display: block;
+              font-size: 14px;
+              font-weight: bold;
+              font-style: normal;
+              color: #fff;
+              line-height: 20px;
+            }
+
+            p {
+              font-size: 14px;
+              color: #fff;
+              line-height: 20px;
+              margin-top: 2px;
+            }
+          }
         }
         .ttiipp {
-          flex: 1;
+          margin-top: 30px;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -209,8 +290,6 @@
       display: none;
     }
     .right {
-      background-image: url('../../assets/img_login_bg.png');
-      background-size: cover;
       .form-wrapper {
         width: 80% !important;
       }

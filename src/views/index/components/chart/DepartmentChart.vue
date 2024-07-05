@@ -2,7 +2,7 @@
   <a-card
     :body-style="{ padding: '10px' }"
     :head-style="{ padding: '0 10px' }"
-    title="软件开发技术"
+    title="开发技术"
     class="card-border-radius"
     :bordered="false"
   >
@@ -42,9 +42,9 @@
           { name: 'Java', max: 50 },
           { name: '前端', max: 5 },
           { name: 'GO', max: 4 },
-          { name: '微服务', max: 3 },
-          { name: 'C++', max: 5 },
-          { name: 'Flutter', max: 10 },
+          { name: 'Node', max: 3 },
+          { name: 'C++', max: 10 },
+          { name: 'Flutter', max: 5 },
         ],
         radius: 60,
         nameGap: 8,
@@ -55,7 +55,7 @@
           type: 'radar',
           data: [
             {
-              value: [30, 3, 4, 3, 5, 8],
+              value: [30, 3, 4, 3, 10, 2],
               itemStyle: {
                 color: '#a8efeb',
               },

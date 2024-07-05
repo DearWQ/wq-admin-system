@@ -2,7 +2,7 @@
   <a-card
     :body-style="{ padding: '10px' }"
     :head-style="{ padding: '0 10px' }"
-    title="课程内容"
+    title="组件数量"
     class="card-border-radius"
     :bordered="false"
   >
@@ -37,7 +37,7 @@
       },
       series: [
         {
-          name: '课程内容',
+          name: '组件数量',
           type: 'pie',
           radius: ['40%', '70%'],
           avoidLabelOverlap: false,
@@ -60,11 +60,11 @@
             smooth: true,
           },
           data: [
-            { value: 1969, name: '井底的蜗牛' },
-            { value: 743, name: '深度辅导面试' },
-            { value: 1594, name: '前端进阶训练营' },
-            { value: 1347, name: 'Webpack5前端工程化' },
-            { value: 635, name: '大厂面试流程' },
+            { value: 1969, name: 'form表单组件' },
+            { value: 743, name: '表格组件' },
+            { value: 1594, name: '图表组件' },
+            { value: 1347, name: '编辑器' },
+            { value: 635, name: '地图' },
           ],
         },
       ],

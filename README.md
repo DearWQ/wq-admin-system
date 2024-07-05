@@ -1,4 +1,7 @@
 
+## 平台简介 admin-system 后台应用场景示例
+admin-system是一个用于后台管理系统所有场景Demo展示的平台，是你在开发过程中遇到类似的场景，可在该平台寻找类似场景直接使用。方便快捷，减少开发时间
+
 ## 开始
 
 * nodejs > 16.18.0 && pnpm > 8.6.0 (强制使用pnpm)
@@ -8,16 +11,33 @@
 * 启动项目 pnpm run dev
 
 
-## 开发规范
-- 组件开发规范:必须是大驼峰命名，页面使用小驼峰命名
-- 变量开发规范：必须是小驼峰命名，单词必须正确
-- 处理async await 错误使用useToAwait方法,不在使用try catch 来捕捉错误，该方法会返回一个数组，数组的第一项是错误信息，第二项是接口返回的数据；当出现错误时，err有值而data没值，没有错误时，err为空，data就是后端返回的值
-    ```
-  async function fn(){ 
-     const [err,data]=await useToAwait(定义的接口方法(params))
-        if(err){//处理错误}
-       if(data){}
-  }
-  ```
-- css 能用原子化css就用原子化css,否侧需要用到自定义的样式比如class必须再命名的时候前面加上名字的缩写，以防止样式冲突
+## 主页控制台
+![img_17.png](src/assets/static/image/img_17.png)
 
+## 系统管理通用模块
+![img_1.png](src/assets/static/image/img_1.png)
+![img_2.png](src/assets/static/image/img_2.png)
+
+## 常见列表组件
+![img_3.png](src/assets/static/image/img_3.png)
+![img_5.png](src/assets/static/image/img_5.png)
+![img_6.png](src/assets/static/image/img_6.png)
+![img_7.png](src/assets/static/image/img_7.png)
+![img_8.png](src/assets/static/image/img_8.png)
+
+## 基本form组件
+![img_9.png](src/assets/static/image/img_9.png)
+![img_10.png](src/assets/static/image/img_10.png)
+
+## 功能组件
+![img_11.png](src/assets/static/image/img_11.png)
+![img_13.png](src/assets/static/image/img_13.png)
+![img_14.png](src/assets/static/image/img_14.png)
+
+## 编辑器
+![img_12.png](src/assets/static/image/img_12.png)
+
+## 地图
+![img_15.png](src/assets/static/image/img_15.png)
+
+## 部分功能还在完善中，有问题和需求都可以提issue，欢迎star和fork。谢谢

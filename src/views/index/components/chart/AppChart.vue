@@ -2,7 +2,7 @@
   <a-card
     :body-style="{ padding: '10px' }"
     :head-style="{ padding: '0 10px' }"
-    title="APP在线人数"
+    title="每周bug数量"
     :bordered="false"
     class="card-border-radius"
   >

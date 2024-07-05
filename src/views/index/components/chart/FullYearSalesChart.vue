@@ -1,5 +1,5 @@
 <template>
-  <a-card :body-style="{ padding: '10px' }" :head-style="{ padding: '0 10px' }" title="年收入表格图"
+  <a-card :body-style="{ padding: '10px' }" :head-style="{ padding: '0 10px' }" title="系统每月下载量"
     :bordered="false" class="card-border-radius">
     <div class="chart-item-container">
       <a-skeleton animation v-if="loading">
