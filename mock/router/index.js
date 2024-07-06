@@ -3,21 +3,21 @@ import Mock from 'mockjs'
 
 export const adminRoutes = [
   {
-    menuUrl: '/index',
+    menuUrl: '/home',
     menuName: '主页',
     routeName: 'indexBoard',
     icon: 'icon-dashboard',
     parentPath: '',
     children: [
       {
-        parentPath: '/index',
-        menuUrl: '/index/home',
+        parentPath: '/home',
+        menuUrl: '/home/main',
         menuName: '主控台',
-        routeName: 'home',
+        routeName: 'main',
       },
       {
-        parentPath: '/index',
-        menuUrl: '/index/work-place',
+        parentPath: '/home',
+        menuUrl: '/home/work-place',
         menuName: '工作台',
         routeName: 'workPlace',
         isRootPath: true,
@@ -194,6 +194,11 @@ export const adminRoutes = [
         parentPath: '/other',
         menuUrl: '/other/watermark',
         menuName: 'canvas图片水印',
+      },
+      {
+        parentPath: '/other',
+        menuUrl: '/other/ellipseTooltip',
+        menuName: 'ellipseTooltip提示',
       }
     ],
   },
@@ -339,6 +344,11 @@ export const adminRoutes = [
     menuName: '地图',
     icon: 'icon-location',
     children: [
+      {
+        parentPath: '/map',
+        menuUrl: '/map/openLayers/index',
+        menuName: 'OpenLayerMap',
+      },
       {
         parentPath: '/map',
         menuUrl: '/map/gaode',

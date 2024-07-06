@@ -108,6 +108,7 @@ export function generatorRoutes(res: Array<OriginRoute>) {
         },
       }
       if (it.children) {
+        // @ts-ignore
         route.children = generatorRoutes(it.children)
       }
       tempRoutes.push(route)

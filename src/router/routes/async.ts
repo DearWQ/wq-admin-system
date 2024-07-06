@@ -13,7 +13,7 @@ export const asyncRoutes = [
       {
         path: 'home',
         name: 'Home',
-        component: (): any => import('@/views/index/main.vue'),
+        component: (): any => import('@/views/home/main.vue'),
         meta: {
           title: '主控台',
           affix: true,
@@ -22,7 +22,7 @@ export const asyncRoutes = [
       {
         path: 'work-place',
         name: 'WorkPlace',
-        component: (): any => import('@/views/index/work-place.vue'),
+        component: (): any => import('@/views/home/work-place.vue'),
         meta: {
           title: '工作台',
         },

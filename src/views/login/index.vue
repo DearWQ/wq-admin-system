@@ -97,6 +97,7 @@
       })
         .then(({ data }: Response) => {
           userStore.saveUser(data as UserState).then(() => {
+            console.log(route.query.redirect ? (route.query.redirect as string) : '/')
             router
               .replace({
                 path: route.query.redirect ? (route.query.redirect as string) : '/',

@@ -32,6 +32,7 @@
     "md-editor-v3": "^4.17.2",
     "mockjs": "^1.1.0",
     "nprogress": "^0.2.0",
+    "ol": "^9.2.4",
     "path-browserify": "^1.0.1",
     "pinia": "^2.0.9",
     "print-js": "^1.6.0",

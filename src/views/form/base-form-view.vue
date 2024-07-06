@@ -26,12 +26,12 @@ import MyDialog from "@/components/MyDialog/MyDialog.vue";
 const showModal = ref(false)
 const formItems = [
   {
-    label: '会议名称',
-    key: 'name',
+    label: '账单名字',
+    key: 'billName',
     required: true,
     type: 'input',
     defaultValue: null,
-    placeholder: '请输入会议名称',
+    placeholder: '请输入账单名字',
     validator: function () {
       if (!this.defaultValue) {
         Message.error(this.placeholder || '')
@@ -41,10 +41,10 @@ const formItems = [
     },
   },
   {
-    label: '与会领导',
-    key: 'leader',
+    label: '交易客户',
+    key: 'customer',
     type: 'select',
-    placeholder: '请选择与会领导',
+    placeholder: '请选择客户',
     defaultValue: '1',
     optionItems: [],
     reset: function () {
@@ -52,19 +52,19 @@ const formItems = [
     },
   },
   {
-    label: '会议类型',
-    key: 'meetType',
+    label: '交易类型',
+    key: 'transactionType',
     required: true,
     type: 'select',
-    placeholder: '请选择会议类型',
+    placeholder: '请选择交易类型',
     defaultValue: "0",
     optionItems: [
       {
-        label: '普通',
+        label: '线上',
         value: '0',
       },
       {
-        label: '紧急',
+        label: '线下',
         value: '1',
       },
     ],
@@ -80,7 +80,7 @@ const formItems = [
     },
   },
   {
-    label: '是否远程',
+    label: '是否现金',
     key: 'remote',
     type: 'switch',
     defaultValue: <Boolean>true,
@@ -89,22 +89,22 @@ const formItems = [
     },
   },
   {
-    label: '所需设备',
-    key: 'equipment',
+    label: '运输交通',
+    key: 'vehicle',
     type: 'checkbox-group',
-    defaultValue: ['tv'],
+    defaultValue: ['kaChe'],
     optionItems: [
       {
-        label: '电视',
-        value: 'tv',
+        label: '卡车',
+        value: 'kaChe',
       },
       {
-        label: '投影仪',
-        value: 'tyy',
+        label: '飞机',
+        value: 'plane',
       },
       {
-        label: '笔记本',
-        value: 'note',
+        label: '轮船',
+        value: 'steamship',
       },
     ],
     reset: function () {
@@ -113,10 +113,10 @@ const formItems = [
   },
 
   {
-    label: '会议地点',
-    key: 'address',
+    label: '交易地点',
+    key: 'transactionAddress',
     type: 'select',
-    placeholder: '请选择会议地点',
+    placeholder: '请选择交易地点',
     defaultValue: 1,
     optionItems: [],
     reset: function () {
@@ -124,8 +124,8 @@ const formItems = [
     },
   },
   {
-    label: '与会人员',
-    key: 'joinMemeber',
+    label: '参与交易成员',
+    key: 'joinMember',
     defaultValue: null,
     placeholder: '请选择与会人员',
     type: 'select',
@@ -173,10 +173,10 @@ const formItems = [
     },
   },
   {
-    label: '会议内容',
+    label: '交易内容',
     key: 'content',
     type: 'textarea',
-    placeholder: '请输入会议内容',
+    placeholder: '请输入交易内容',
     defaultValue: null,
     colSpan: 24,
     reset: function () {
@@ -184,7 +184,7 @@ const formItems = [
     },
   },
   {
-    label: '会议备注',
+    label: '备注',
     key: 'remark',
     placeholder: '请输入会议备注',
     colSpan: 24,
@@ -193,7 +193,7 @@ const formItems = [
   },
 ] as FormItem[]
 formItems.forEach( async (item) => {
-  if (item.key === 'leader') {
+  if (item.key === 'customer') {
     item.optionItems= await new Promise((resolve) => {
      resolve([
        {
@@ -216,24 +216,24 @@ formItems.forEach( async (item) => {
    })
     console.log(item.optionItems)
   }
-  if (item.key === 'address') {
+  if (item.key === 'transactionAddress') {
 
     item.optionItems= await new Promise((resolve) => {
       resolve([
         {
-          label: '会议一室',
+          label: '外太空',
           value: 1,
         },
         {
-          label: '会议二室',
+          label: '赤道',
           value: 2,
         },
         {
-          label: '会议三室',
+          label: '月球',
           value: 3,
         },
         {
-          label: '会议四室',
+          label: '火星',
           value: 4,
         },
       ])
@@ -242,16 +242,16 @@ formItems.forEach( async (item) => {
 })
 
 const formData = ref({
-  name: '1111111',
-  leader: '1234567',
-  meetType: '',
+  billName: '1111111',
+  customer: '1234567',
+  transactionType: '',
   remote: false,
-  equipment: [],
+  vehicle: [],
   content: '',
   startEndDate: [],
   startTime: '',
-  address: '',
-  joinMemeber: '',
+  transactionAddress: '',
+  joinMember: '',
   remark: '',
 })
 const handleSave = () => {
