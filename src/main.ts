@@ -9,7 +9,11 @@ import setupRouterGuard from './router/guard'
 import { setupMock } from '../mock'
 
 import {ellipsisTooltip} from '@/directive/toolTip/ellipsisTooltip'
-
+declare global {
+  interface Window {
+    CESIUM_BASE_URL: string
+  }
+}
 function setup() {
   const app = createApp(App)
   setupPinia(app)

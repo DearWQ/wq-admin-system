@@ -6,7 +6,6 @@ import dotenv from 'dotenv'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import Inspect from 'vite-plugin-inspect'
 
-
 export default defineConfig(({ mode }) => {
   const dotenvConfig = dotenv.config({ path: `./.env.${mode}` })
   const dotenvObj = dotenvConfig.parsed
@@ -45,7 +44,7 @@ export default defineConfig(({ mode }) => {
         symbolId: 'icon-[dir]-[name]',
       }),
       vueJsx(),
-      Inspect()
+      Inspect(),
     ],
     css: {
       preprocessorOptions: {

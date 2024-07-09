@@ -4,7 +4,6 @@ import { TableFooterType, TableHeaderType } from '@/types/components'
 import { TableColumnData } from '@arco-design/web-vue/es/table/interface'
 
 type TableColumnPops = TableColumnData & { key: string | number }
-
 interface Table {
   dataList: Array<any>
   bordered: Ref<boolean>

@@ -1,0 +1,52 @@
+{
+  "asset": {
+    "gltfUpAxis": "Z",
+    "version": "0.0"
+  },
+  "geometricError": 313.7124328613281,
+  "root": {
+    "boundingVolume": {
+      "box": [
+        -2761160.0,
+        4770267.0,
+        3198864.0,
+        102.5,
+        0.0,
+        0.0,
+        0.0,
+        92.25,
+        0.0,
+        0.0,
+        0.0,
+        74.75
+      ]
+    },
+    "children": [
+      {
+        "boundingVolume": {
+          "box": [
+            -2761160.0,
+            4770267.0,
+            3198864.0,
+            102.5,
+            0.0,
+            0.0,
+            0.0,
+            92.25,
+            0.0,
+            0.0,
+            0.0,
+            74.75
+          ]
+        },
+        "content": {
+          "uri": "Block/tileset.json"
+        },
+        "geometricError": 287.524169921875,
+        "refine": "REPLACE"
+      }
+    ],
+    "geometricError": 313.7124328613281,
+    "refine": "REPLACE"
+  }
+}

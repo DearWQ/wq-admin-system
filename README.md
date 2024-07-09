@@ -39,5 +39,6 @@ admin-system是一个用于后台管理系统所有场景Demo展示的平台，�
 
 ## 地图
 ![img_15.png](src/assets/static/image/img_15.png)
+![img.png](src/assets/static/image/img.png)
 
 ## 部分功能还在完善中，有问题和需求都可以提issue，欢迎star和fork。谢谢

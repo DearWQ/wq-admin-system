@@ -1,4 +1,29 @@
 import Mock, { Random } from 'mockjs'
+
+
+
+//这里重写mock的send方法是因为在使用Cesium三维时mock导致无法显示地图问题
+Mock.XHR.prototype.send = (() => {
+  const _send = Mock.XHR.prototype.send
+  return function() {
+    if (!this.match) {
+      this.custom.xhr.responseType = this.responseType || ''
+      this.custom.xhr.timeout = this.timeout || 0
+      this.custom.xhr.withCredentials = this.withCredentials || false
+      this.custom.xhr.onabort = this.onabort || null
+      this.custom.xhr.onerror = this.onerror || null
+      this.custom.xhr.onload = this.onload || null
+      this.custom.xhr.onloadend = this.onloadend || null
+      this.custom.xhr.onloadstart = this.onloadstart || null
+      this.custom.xhr.onprogress = this.onprogress || null
+      this.custom.xhr.onreadystatechange = this.onreadystatechange || null
+      this.custom.xhr.ontimeout = this.ontimeout || null
+    }
+    return _send.apply(this, arguments)
+  }
+})()
+
+
 import { baseData } from '../base.ts'
 import {
   getDepartmentList,

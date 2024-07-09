@@ -346,8 +346,8 @@ export const adminRoutes = [
     children: [
       {
         parentPath: '/map',
-        menuUrl: '/map/openLayers/index',
-        menuName: 'OpenLayerMap',
+        menuUrl: '/map/baidu',
+        menuName: '百度地图',
       },
       {
         parentPath: '/map',
@@ -356,8 +356,13 @@ export const adminRoutes = [
       },
       {
         parentPath: '/map',
-        menuUrl: '/map/baidu',
-        menuName: '百度地图',
+        menuUrl: '/map/openLayers/index',
+        menuName: 'OpenLayers地图',
+      },
+      {
+        parentPath: '/map',
+        menuUrl: '/map/Cesium/index',
+        menuName: 'Cesium三维地图',
       },
     ],
   },
@@ -540,6 +545,16 @@ export const editorRoutes = [
         parentPath: '/map',
         menuUrl: '/map/baidu',
         menuName: '百度地图',
+      },
+      {
+        parentPath: '/map',
+        menuUrl: '/map/openLayers/index',
+        menuName: 'openLayers地图',
+      },
+      {
+        parentPath: '/map',
+        menuUrl: '/map/Cesium/index',
+        menuName: 'Cesium三维地图',
       },
     ],
   },
