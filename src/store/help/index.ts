@@ -140,7 +140,6 @@ export function mapTwoLevelRouter(srcRoutes: Array<RouteRecordRaw>) {
       parentRoutes && parentRoutes.length > 0 && (route.children = parentRoutes)
       tempRoutes.push(route)
     })
-    console.log(tempRoutes)
     return tempRoutes
   }
   return []

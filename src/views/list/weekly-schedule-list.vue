@@ -89,7 +89,7 @@ const timePeriodList=ref([
             status: 1,
           },
           {
-            timePeriod: '实验室1',
+            timePeriod: '14:00~1600',
             date: getCurDay(-1),
             course: '大学英语',
             watchman: '井底的蜗牛',
@@ -97,7 +97,7 @@ const timePeriodList=ref([
             status: 1,
           },
           {
-            timePeriod: '实验室1',
+            timePeriod: '16:00~1800',
             date: getCurDay(-1),
             course: '大学英语',
             watchman: '井底的蜗牛',

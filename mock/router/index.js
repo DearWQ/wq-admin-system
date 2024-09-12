@@ -197,6 +197,11 @@ export const adminRoutes = [
       },
       {
         parentPath: '/other',
+        menuUrl: '/other/sign',
+        menuName: '绘制签名',
+      },
+      {
+        parentPath: '/other',
         menuUrl: '/other/ellipseTooltip',
         menuName: 'ellipseTooltip提示',
       }

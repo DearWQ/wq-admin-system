@@ -47,6 +47,7 @@ const months = ref([])
 const curDate = ref()
 const nowDate = ref(new Date())
 
+const _planList=ref(props.planList)
 
 watch(() => props.isFirstDayOfMondayOrSunday, (val) => {
   if (val > 1) {
@@ -60,6 +61,7 @@ watch(() => props.isFirstDayOfMondayOrSunday, (val) => {
 const handleExpand = (row) => {
   row.isExpend = !row.isExpend
 }
+
 /**
  * 获取 时间
  * @param time
@@ -99,7 +101,7 @@ const addDate = (date, n) => {
   return date
 }
 
-const emit = defineEmits(['handleDetail', 'handleCardDetail', 'changeWeek'])
+const emit = defineEmits(['handleDetail', 'handleCardDetail', 'changeWeek','handleAdd','handleDel'])
 /**
  * 上周
  */
@@ -168,6 +170,17 @@ const handleCardDetail = (month, period) => {
   emit('handleCardDetail', {...month, ...period})
 }
 
+//删除
+const handleDel=(row)=>{
+  console.log(row)
+  emit('handleAdd',row)
+}
+//添加
+const handleAdd=(car)=>{
+  console.log(car)
+  emit('handleAdd',car)
+}
+
 onMounted(() => {
   getCurWeek()
 })
@@ -214,8 +227,8 @@ onMounted(() => {
       <div class="w-time-period-list">
         <ul class="w-time-period-row">
           <!--循环时段，看时段有多少个-->
-          <template v-if="planList.length>0">
-            <li v-for="(period,p_index) in planList" :key="`period${p_index}`"
+          <template v-if="_planList.length>0">
+            <li v-for="(period,p_index) in _planList" :key="`period${p_index}`"
                 class="w-time-period-col">
               <!--第一列显示时段-->
               <div class="w-time-period"> {{ period.timePeriod }}</div>
@@ -247,14 +260,23 @@ onMounted(() => {
                             <slot :row="single" name="thing"></slot>
                           </div>
                         </template>
-                        <div v-if="card[month.date].length>hasNumExpend&&(card[month.date].length-1)===sIndex&&!card.isExpend&&single.date===month.date"
-                             class="w_expand"
-                             @click="handleExpand(card)">展开
+                        <div class="btnList">
+                          <div v-if="(card[month.date].length-1)===sIndex&&single.date===month.date"
+                               class="w_add"
+                               @click="handleAdd(card)">添加
+                          </div>
+                          <div
+                              v-if="card[month.date].length>hasNumExpend&&(card[month.date].length-1)===sIndex&&!card.isExpend&&single.date===month.date"
+                              class="w_expand"
+                              @click="handleExpand(card)">展开
+                          </div>
+                          <div
+                              v-if="card[month.date].length>hasNumExpend&&(card[month.date].length-1)===sIndex&&card.isExpend&&single.date===month.date"
+                              class="w_shrink"
+                              @click="handleExpand(card)">收缩
+                          </div>
                         </div>
-                        <div v-if="card[month.date].length>hasNumExpend&&(card[month.date].length-1)===sIndex&&card.isExpend&&single.date===month.date"
-                             class="w_shrink"
-                             @click="handleExpand(card)">收缩
-                        </div>
+
                       </template>
                     </template>
                   </div>
@@ -430,13 +452,16 @@ ul, li {
 }
 
 .w-row-day .w-things {
+  position: relative;
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-left: 1px solid #EAEDF2;
   border-bottom: 1px solid #EAEDF2;
+  padding-bottom: 40px;
   box-sizing: border-box;
+
 }
 
 .w-row-day .w-things:last-child {
@@ -476,14 +501,34 @@ ul, li {
   box-sizing: border-box;
 }
 
-.w_expand, .w_shrink {
+.btnList {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  padding: 2% 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-sizing: border-box;
+  border-top: 1px solid #EAEDF2;
+}
+
+.w_expand, .w_shrink, .w_add, .w_del {
   color: #0A98D5;
   cursor: pointer;
-  width: 100%;
-  padding: 2% 0;
   display: flex;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+}
+
+.w_add {
+  color: #c2d481;
+}
+
+.w_del {
+  color: #FF2525;
 }
 </style>
