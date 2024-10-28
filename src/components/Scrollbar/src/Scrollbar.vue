@@ -16,7 +16,7 @@
     </template>
   </div>
 </template>
-<script lang="ts">
+<script >
   import { toObject } from './util'
   import {
     defineComponent,

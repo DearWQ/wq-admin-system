@@ -6,28 +6,24 @@
   </a-breadcrumb>
 </template>
 
-<script lang="ts" setup>
+<script setup>
   import { onMounted, reactive, watch } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
-  interface DropItem {
-    label: string
-    key: string
-    children?: DropItem[]
-  }
-  const breadcrumbs = reactive<Array<DropItem>>([])
+
+  const breadcrumbs = reactive([])
   const route = useRoute()
   const router = useRouter()
   function generatorBreadcrumb() {
     breadcrumbs.length = 0
     const matchedPath = route.matched.map((it) => {
       return {
-        label: (it.meta ? it.meta.title || '' : '') as string,
+        label: (it.meta ? it.meta.title || '' : '') ,
         key: it.path,
       }
     })
     breadcrumbs.push(...matchedPath)
   }
-  function handleSelect(key: string) {
+  function handleSelect(key) {
     router.push(key)
   }
   onMounted(() => {

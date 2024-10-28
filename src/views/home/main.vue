@@ -59,7 +59,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
   import DataItem from './components/DataItem.vue'
   import OrderChart from './components/chart/OrderChart.vue'
   import AppChart from './components/chart/AppChart.vue'
@@ -70,12 +70,12 @@
   import { computed, ref, watch } from 'vue'
   import useAppConfigStore from '@/store/modules/app-config'
   const appStore = useAppConfigStore()
-  const mOrderChart = ref<InstanceType<typeof OrderChart>>()
-  const appChart = ref<InstanceType<typeof AppChart>>()
-  const enrollmentChannelsChart = ref<InstanceType<typeof EnrollmentChannelsChart>>()
-  const studentChart = ref<InstanceType<typeof StudentChart>>()
-  const fullYearSalesChart = ref<InstanceType<typeof FullYearSalesChart>>()
-  const departmentChart = ref<InstanceType<typeof DepartmentChart>>()
+  const mOrderChart = ref()
+  const appChart = ref()
+  const enrollmentChannelsChart = ref()
+  const studentChart = ref()
+  const fullYearSalesChart = ref()
+  const departmentChart = ref()
   const onResize = () => {
     setTimeout(() => {
       mOrderChart.value?.updateChart()

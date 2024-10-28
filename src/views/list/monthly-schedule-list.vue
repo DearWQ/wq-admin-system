@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import MonthlySchedule from "@/components/MonthlySchedule/MonthlySchedule.vue";
 import {ref} from "vue";
 import {getCurDay} from "@/utils";

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup >
 
 import WeeklySchedule from "@/components/WeeklySchedule/WeeklySchedule.vue";
 import {ref} from "vue";

@@ -1,7 +1,7 @@
 import { getMenuListByRoleId, getAllMenuByRoleId, login, updateUserInfo } from '@/api/url'
 import { randomString } from '@/utils'
 import Mock from 'mockjs'
-import { baseData } from '../base.ts'
+import { baseData } from '../base'
 import { adminRoutes, editorRoutes } from '../router'
 
 Mock.mock(RegExp(login), 'post', function (options) {

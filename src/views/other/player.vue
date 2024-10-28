@@ -6,12 +6,12 @@
   </a-card>
 </template>
 
-<script lang="ts" setup>
+<script setup>
   import { onMounted, ref } from 'vue'
   import Player from 'xgplayer'
   const playUrl = ''
   const poster = '/src/assets/img_avatar.gif'
-  const playerRef = ref<HTMLDivElement>()
+  const playerRef = ref()
   onMounted(() => {
     new Player({
       el: playerRef.value,

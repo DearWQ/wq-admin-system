@@ -4,8 +4,8 @@
   </a-card>
 </template>
 
-<script lang="ts" setup>
-  import { projectName } from '../../setting'
+<script setup>
+  import { projectName } from '@/setting'
 </script>
 
 <style lang="less" scoped>

@@ -75,7 +75,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script >
   import useUserStore from '@/store/modules/user'
   import { defineComponent, ref } from 'vue'
   export default defineComponent({

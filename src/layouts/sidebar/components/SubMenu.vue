@@ -25,7 +25,7 @@
   </a-sub-menu>
 </template>
 
-<script lang="ts" name="SubMenu">
+<script  name="SubMenu">
   import {defineComponent} from 'vue';
   // const props = defineProps({
   //   menuInfo: {

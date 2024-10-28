@@ -11,11 +11,12 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script  setup>
   import useAppConfigStore from '@/store/modules/app-config'
   import usePermissionStore from '@/store/modules/permission'
   import { SideTheme } from '@/store/types'
   import { computed } from 'vue'
+  import ScrollerMenu from "@/layouts/sidebar/components/ScrollerMenu.vue";
   const props = defineProps({
     showLogo: { type: Boolean, default: true },
   });

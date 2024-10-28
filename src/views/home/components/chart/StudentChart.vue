@@ -25,12 +25,12 @@
   </a-card>
 </template>
 
-<script lang="ts" setup>
+<script setup>
   import useEcharts from '@/hooks/useEcharts'
   import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
   import { dispose, graphic } from 'echarts/core'
       const loading = ref(true)
-      const studentChart = ref<HTMLDivElement | null>(null)
+      const studentChart = ref(null)
       const init = () => {
         const option = {
           grid: {
@@ -80,16 +80,16 @@
         setTimeout(() => {
           loading.value = false
           nextTick(() => {
-            useEcharts(studentChart.value as HTMLDivElement).setOption(option)
+            useEcharts(studentChart.value).setOption(option)
           })
         }, 1000)
       }
       const updateChart = () => {
-        useEcharts(studentChart.value as HTMLDivElement).resize()
+        useEcharts(studentChart.value).resize()
       }
       onMounted(init)
       onBeforeUnmount(() => {
-        dispose(studentChart.value as HTMLDivElement)
+        dispose(studentChart.value)
       })
 </script>
 

@@ -31,16 +31,15 @@
   </a-popover>
 </template>
 
-<script lang="ts">
-  import { TablePropsType } from '@/types/components'
-  import { defineComponent, PropType, reactive, ref, toRef } from 'vue'
+<script>
+  import { defineComponent, reactive, ref, toRef } from 'vue'
   import draggable from 'vuedraggable'
   export default defineComponent({
     name: 'SortableTable',
     components: { draggable },
     props: {
       columns: {
-        type: Array as PropType<TablePropsType[]>,
+        type: Array,
         require: true,
       },
     },
@@ -54,14 +53,14 @@
             return {
               ...it,
               checked: ref(true),
-            } as TablePropsType
+            }
           }) || []
       const innerTableProps = reactive(tempArray)
       const isIndeterminate = ref(
         innerTableProps.filter((it) => it.checked).length !== innerTableProps.length
       )
       const allChecked = ref(innerTableProps.every((it) => it.checked))
-      function onAllChange(value: any) {
+      function onAllChange(value) {
         innerTableProps.forEach((it) => (it.checked = value?.target?.checked))
         emit(
           'update',

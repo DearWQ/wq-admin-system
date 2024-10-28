@@ -14,13 +14,14 @@
   </a-card>
 </template>
 
-<script lang="ts" >
+<script >
   export default {
     name: "NavBar",
   };    
 </script>
-<script lang="ts"  setup>
+<script   setup>
   import useAppConfigStore from '@/store/modules/app-config'
+  import VAWavatar from "@/layouts/avatar/index.vue";
   const appStore = useAppConfigStore()
 </script>
 <style scoped lang="less">

@@ -47,7 +47,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script  setup>
   import Chart from './components/Chart.vue'
   const options1 = {
     xAxis: {

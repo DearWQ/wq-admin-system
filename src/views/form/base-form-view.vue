@@ -15,12 +15,10 @@
   </a-card>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import {Message} from '@arco-design/web-vue'
 import MyForm from "@/components/MyForm/MyForm.vue";
-import {FormItem} from '@/types/components'
 import {ref} from "vue";
-import type {Dayjs} from 'dayjs'
 import MyDialog from "@/components/MyDialog/MyDialog.vue";
 
 const showModal = ref(false)
@@ -83,7 +81,7 @@ const formItems = [
     label: '是否现金',
     key: 'remote',
     type: 'switch',
-    defaultValue: <Boolean>true,
+    defaultValue: true,
     reset: function () {
       this.defaultValue = true
     },
@@ -157,7 +155,7 @@ const formItems = [
     key: 'startEndDate',
     type: 'date-range',
     colSpan: 12,
-    defaultValue: <Dayjs[]>[],
+    defaultValue:[],
     reset: function () {
       this.defaultValue = []
     },
@@ -191,7 +189,7 @@ const formItems = [
     type: 'textarea',
     defaultValue: '',
   },
-] as FormItem[]
+]
 formItems.forEach( async (item) => {
   if (item.key === 'customer') {
     item.optionItems= await new Promise((resolve) => {
@@ -268,7 +266,7 @@ function submit() {
           '提交成功，参数为：' +
           JSON.stringify(
               formItems.reduce((pre, cur) => {
-                ;(pre as any)[cur.key] = (cur as any).value.value
+                ;(pre)[cur.key] = (cur).value.value
                 return pre
               }, {})
           )

@@ -10,7 +10,7 @@
   </a-card>
 </template>
 
-<script lang="ts" setup>
+<script setup>
   import { ref } from 'vue'
   const icon = ref('');
 </script>

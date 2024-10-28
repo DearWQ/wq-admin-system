@@ -15,7 +15,7 @@
   </a-card>
 </template>
 
-<script lang="ts">
+<script>
   import useEcharts from '@/hooks/useEcharts'
   import { defineComponent, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
   import { dispose } from 'echarts/core'
@@ -24,7 +24,7 @@
     name: 'StudentChart',
     setup() {
       const loading = ref(true)
-      const studentChart = ref<HTMLDivElement | null>(null)
+      const studentChart = ref(null)
       const init = () => {
         const option = {
           grid: {
@@ -57,7 +57,7 @@
               barWidth: 'auto',
               label: {
                 show: true,
-                formatter(val: any) {
+                formatter(val) {
                   return val.data + '万'
                 },
               },
@@ -67,16 +67,16 @@
         setTimeout(() => {
           loading.value = false
           nextTick(() => {
-            useEcharts(studentChart.value as HTMLDivElement).setOption(option)
+            useEcharts(studentChart.value).setOption(option)
           })
         }, 1000)
       }
       const updateChart = () => {
-        useEcharts(studentChart.value as HTMLDivElement).resize()
+        useEcharts(studentChart.value).resize()
       }
       onMounted(init)
       onBeforeUnmount(() => {
-        dispose(studentChart.value as HTMLDivElement)
+        dispose(studentChart.value)
       })
       return {
         loading,

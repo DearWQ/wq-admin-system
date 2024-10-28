@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script  setup>
   import { ref } from 'vue'
   import { Message } from '@arco-design/web-vue'
   import {

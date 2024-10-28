@@ -8,7 +8,7 @@
   </router-view>
 </template>
 
-<script lang="ts" setup>
+<script  setup>
   import useAppConfigStore from '@/store/modules/app-config'
   import useCachedRouteStore from '@/store/modules/cached-routes'
   const appStore = useAppConfigStore()

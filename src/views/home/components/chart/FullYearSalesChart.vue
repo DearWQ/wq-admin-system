@@ -11,13 +11,13 @@
     </div>
   </a-card>
 </template>
-<script lang="ts" setup>
+<script setup>
 import useEcharts from '@/hooks/useEcharts'
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { dispose, graphic } from 'echarts/core'
 import { random } from 'lodash-es'
 function getData() {
-  const data: number[] = []
+  const data = []
   while (data.length < 12) {
     data.push(random(80, 250))
   }
@@ -38,8 +38,8 @@ const months = [
   '十二月',
 ]
 const loading = ref(true)
-const fullYearSalesChart = ref<HTMLDivElement | null>(null)
-let interval: any = null
+const fullYearSalesChart = ref(null)
+let interval= null
 const init = () => {
   const option = {
     color: ['rgba(64, 58, 255)'],
@@ -73,7 +73,7 @@ const init = () => {
         smooth: true,
         label: {
           show: true,
-          formatter(val: any) {
+          formatter(val) {
             return val.data + '万'
           },
         },
@@ -90,7 +90,7 @@ const init = () => {
   setTimeout(() => {
     loading.value = false
     setTimeout(() => {
-      nextTick(() => useEcharts(fullYearSalesChart.value as HTMLDivElement).setOption(option))
+      nextTick(() => useEcharts(fullYearSalesChart.value).setOption(option))
       interval = setInterval(() => {
         const option = {
           series: [
@@ -99,14 +99,14 @@ const init = () => {
             },
           ],
         }
-        useEcharts(fullYearSalesChart.value as HTMLDivElement).setOption(option)
+        useEcharts(fullYearSalesChart.value).setOption(option)
       }, 5000)
     }, 100)
   }, 1000)
 }
 onMounted(init)
 onBeforeUnmount(() => {
-  dispose(fullYearSalesChart.value as HTMLDivElement)
+  dispose(fullYearSalesChart.value)
   clearInterval(interval)
 })
 </script>

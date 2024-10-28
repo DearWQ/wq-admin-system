@@ -17,13 +17,12 @@
   </a-space>
 </template>
 
-<script lang="ts" setup>
+<script  setup>
   import useAppInfo from '@/hooks/useAppInfo'
-  import type { DescData } from '@arco-design/web-vue'
   import { onMounted, reactive, ref } from 'vue'
   const { version, dependencies, devDependencies } = useAppInfo()
-  const dependenciesList = reactive<DescData[]>([])
-  const devDependenciesList = reactive<DescData[]>([])
+  const dependenciesList = reactive([])
+  const devDependenciesList = reactive([])
   onMounted(() => {
     const depValues = Object.values(dependencies)
     Object.keys(dependencies).map((it, index) => {

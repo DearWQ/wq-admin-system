@@ -1,6 +1,6 @@
 <template>
 </template>
-<script lang="ts">
+<script >
 </script>
 <!-- <template>
   <a-card :body-style="{ padding: 0 }" :bordered="false">
@@ -82,7 +82,6 @@
     IconToRight as ArrowRightOutlined,
   } from '@arco-design/web-vue/es/icon'
   import useVisitedRouteStore from '@/store/modules/visited-routes'
-  import { RouteRecordRaw } from 'vue-router'
   export default defineComponent({
     name: 'TabBar',
     components: {

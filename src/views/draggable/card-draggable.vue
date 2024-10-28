@@ -23,19 +23,15 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script  setup>
   import { onMounted, reactive } from 'vue'
   import draggable from 'vuedraggable'
   import * as Icons from '@arco-design/web-vue/es/icon'
   import { toHump } from '@/utils'
   const tempIcons = Object.keys(Icons).slice(0, 50)
-  interface IconItemType {
-    label: string
-    id: string
-    color: string
-  }
+
   const iconList = [...tempIcons]
-  const list: Array<IconItemType> = reactive([])
+  const list = reactive([])
   const drag = false
   const colors = [
     '#0081ff',
@@ -51,13 +47,13 @@
     '#39b54a',
     '#1cbbb4'
   ]
-  const getRandomColor = (): string => {
+  const getRandomColor = () => {
     return colors[Math.floor(Math.random() * colors.length)]
   }
-  const resetElements = (): void => {
+  const resetElements = () => {
     list.length = 0
     list.push(
-      ...iconList.map((it, index: number): IconItemType => {
+      ...iconList.map((it, index) => {
         return {
           label: `第 ${index + 1} 个元素`,
           id: toHump(it),
@@ -68,7 +64,7 @@
   }
   onMounted(() => {
     list.push(
-      ...iconList.map((it, index: number): IconItemType => {
+      ...iconList.map((it, index) => {
         return {
           label: `第 ${index + 1} 个元素`,
           id: it,

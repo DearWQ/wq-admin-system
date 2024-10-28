@@ -25,6 +25,7 @@
     "@arco-vue-pro-components/pro-components": "^1.0.3",
     "@logicflow/core": "^0.7.13-alpha.1",
     "@logicflow/extension": "^0.7.13-alpha.1",
+    "@turf/turf": "^7.1.0",
     "@vueuse/core": "^7.1.2",
     "axios": "^0.24.0",
     "cesium": "1.104",

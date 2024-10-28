@@ -39,9 +39,9 @@
                 v-for="item of tableColumns"
                 :key="item.key"
                 :align="item.align"
-                :title="(item.title as string)"
+                :title="(item.title)"
                 :width="item.width"
-                :data-index="(item.key as string)"
+                :data-index="(item.key)"
                 :fixed="item.fixed"
               >
                 <template v-if="item.key === 'index'" #cell="{ rowIndex }">
@@ -78,7 +78,7 @@
   </a-row>
 </template>
 
-<script lang="ts" setup>
+<script setup>
   import { post } from '@/api/http'
   import { getTableList } from '@/api/url'
   import {
@@ -259,7 +259,7 @@
         })
           .then((res) => {
             handleSuccess(res)
-            pagination.setTotalSize((res as any).totalSize)
+            pagination.setTotalSize((res).totalSize)
           })
           .catch(console.log)
       }
@@ -280,7 +280,7 @@
           },
         })
       }
-      function onDeleteItem(item: any) {
+      function onDeleteItem(item) {
         Modal.confirm({
           title: '提示',
           content: '确定要删除此数据吗？',
@@ -292,7 +292,7 @@
           },
         })
       }
-      function onUpdateExpandedKeys(keys: any) {
+      function onUpdateExpandedKeys(keys) {
         getExpandedKeys.value = [...keys]
       }
       const getExpandedKeys = ref(departmentData.map((it) => it.key))

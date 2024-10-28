@@ -15,14 +15,14 @@
   </a-card>
 </template>
 
-<script lang="ts" setup>
+<script  setup>
   import { reactive } from 'vue'
   import * as AllIcons from '@arco-design/web-vue/es/icon'
   import { useClipboard } from '@vueuse/core'
   import { Message } from '@arco-design/web-vue'
   const iconArray = Object.keys(AllIcons)
   const { copy, isSupported } = useClipboard()
-  const onCopy = (item: string) => {
+  const onCopy = (item) => {
     if (!isSupported) {
       Message.error('当前浏览器不支持此功能')
       return
@@ -33,7 +33,7 @@
   }
   let index = 0
   const size = 30
-  const tempIcon = reactive([] as string[])
+  const tempIcon = reactive([])
   tempIcon.push(...iconArray.slice(index, size))
   function onLoadMore() {
     if (tempIcon.length >= iconArray.length) {
@@ -43,7 +43,7 @@
     index++
     tempIcon.push(...iconArray.slice(index * size, index * size + size))
   }
-  function getCopyContent(item: string) {
+  function getCopyContent(item) {
     return `<${item}/>`
   }
 </script>

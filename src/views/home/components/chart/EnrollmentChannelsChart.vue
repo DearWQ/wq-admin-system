@@ -17,12 +17,12 @@
   </a-card>
 </template>
 
-<script lang="ts" setup>
+<script  setup>
   import useEcharts from '@/hooks/useEcharts'
   import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
   import { dispose } from 'echarts/core'
   const loading = ref(true)
-  const channelsChart = ref<HTMLDivElement | null>(null)
+  const channelsChart = ref(null)
   const init = () => {
     const option = {
       grid: {
@@ -72,13 +72,13 @@
     setTimeout(() => {
       loading.value = false
       nextTick(() => {
-        useEcharts(channelsChart.value as HTMLDivElement).setOption(option)
+        useEcharts(channelsChart.value).setOption(option)
       })
     }, 1000)
   }
   onMounted(init)
   onBeforeUnmount(() => {
-    dispose(channelsChart.value as HTMLDivElement)
+    dispose(channelsChart.value)
   })
 </script>
 

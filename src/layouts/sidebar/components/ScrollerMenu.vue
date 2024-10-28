@@ -25,43 +25,44 @@
   </component>
 </template>
 
-<script lang="ts">
+<script >
   import {
     computed,
     defineComponent,
     nextTick,
     onMounted,
-    PropType,
     ref,
     shallowReactive,
     watch,
     watchEffect,
   } from 'vue'
-  import { RouteRecordRaw, useRoute, useRouter } from 'vue-router'
+  import {  useRoute, useRouter } from 'vue-router'
   import { isExternal } from '@/utils'
   import useAppConfigStore from '@/store/modules/app-config'
   import { LayoutMode, SideTheme, ThemeMode } from '@/store/types'
   import { transfromMenu } from '@/store/help'
+  import SubMenu from "@/layouts/sidebar/components/SubMenu.vue";
 
   export default defineComponent({
     name: 'ScrollerMenu',
+    components: {SubMenu},
     props: {
       routes: {
-        type: Object as PropType<Array<RouteRecordRaw>>,
+        type: Object,
         require: true,
         default: () => [],
       },
       mode: {
-        type: String as PropType<'vertical' | 'pop' | 'horizontal' | 'popButton' | undefined>,
+        type: String,
         default: 'vertical',
       },
     },
     emits: ['top-item-click'],
     setup(props, { emit }) {
       const appStore = useAppConfigStore()
-      const menuOptions = shallowReactive<any[]>([])
-      const defaultPath = ref<string[]>([])
-      const defaultExpandKeys = ref<string[]>([])
+      const menuOptions = shallowReactive([])
+      const defaultPath = ref([])
+      const defaultExpandKeys = ref([])
       const menuMode = computed(() => props.mode)
       const currentRoute = useRoute()
       const router = useRouter()
@@ -83,7 +84,7 @@
           : 'dark'
       })
       handleExpandPath()
-      function handleMenu(routes?: Array<RouteRecordRaw>) {
+      function handleMenu(routes) {
         menuOptions.length = 0
         const tempMenus = transfromMenu(routes || [])
         menuOptions.push(...tempMenus)
@@ -105,7 +106,7 @@
           }
         })
       }
-      function onMenuClick(key: string) {
+      function onMenuClick(key) {
         if (menuMode.value === 'horizontal') {
           emit('top-item-click', key)
           return

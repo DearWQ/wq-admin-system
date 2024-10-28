@@ -5,7 +5,7 @@
         <a-button type="primary" size="small" @click="printImage">打印</a-button>
       </template>
       <div class="image-wrapper">
-        <img :src="imagePath" />
+        <img alt="" :src="imagePath" />
       </div>
     </a-card>
     <a-card
@@ -24,7 +24,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
   import printJS from 'print-js'
   import imagePath from '@/assets/img_avatar.gif'
   function printImage() {

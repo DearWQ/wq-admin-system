@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script  setup>
 
 import {onMounted, ref, watch} from "vue";
 import {formatDate, getCurDay} from "@/utils";
@@ -284,7 +284,7 @@ onMounted(() => {
               </div>
             </li>
           </template>
-          <div v-else class="w-noMore"><span>暂无数据</span></div>
+          <li v-else class="w-noMore"><span>暂无数据</span></li>
         </ul>
       </div>
     </div>

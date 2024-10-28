@@ -11,16 +11,17 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script  setup>
   import useAppConfigStore from '@/store/modules/app-config'
   import usePermissionStore from '@/store/modules/permission'
   import { SideTheme, ThemeMode } from '@/store/types'
   import { computed, defineComponent, ref, watch } from 'vue'
-  import { RouteRecordRaw, useRoute } from 'vue-router'
+  import {  useRoute } from 'vue-router'
+  import ScrollerMenu from "@/layouts/sidebar/components/ScrollerMenu.vue";
   const permissionStore = usePermissionStore()
   const appStore = useAppConfigStore()
   const route = useRoute()
-  const routes = ref<RouteRecordRaw[]>([])
+  const routes = ref([])
   const bgColor = computed(() => {
     if (appStore.layoutMode !== 'ttb') {
       if (appStore.sideTheme === SideTheme.DARK) {

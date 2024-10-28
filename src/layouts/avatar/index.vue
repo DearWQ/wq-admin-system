@@ -4,7 +4,7 @@
       <div class="action-wrapper">
         <div class="avatar">
           <a-avatar :size="30">
-            <img :src="userStore.avatar" />
+            <img alt="" :src="userStore.avatar" />
           </a-avatar>
         </div>
         <span class="nick-name">
@@ -24,7 +24,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
   import { Modal } from '@arco-design/web-vue'
   import { defineComponent } from 'vue'
   import {
@@ -69,7 +69,7 @@
           },
         })
       }
-      function handleSelect(key: string) {
+      function handleSelect(key) {
         console.log(key)
         switch (key) {
           case 'personal-center':

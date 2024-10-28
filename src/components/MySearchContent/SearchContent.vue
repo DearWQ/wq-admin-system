@@ -33,16 +33,11 @@
   </a-modal>
 </template>
 
-<script lang="ts">
+<script>
   import usePermissionStore from '@/store/modules/permission'
   import { defineComponent, onMounted, ref } from 'vue'
-  import { RouteRecordRaw, useRouter } from 'vue-router'
-  interface InnerSearchItem {
-    title: string
-    key: string
-    disabled: boolean
-    children?: InnerSearchItem[]
-  }
+  import { useRouter } from 'vue-router'
+
 
   export default defineComponent({
     setup() {
@@ -50,7 +45,7 @@
       const activeKey = ref('1')
       const outValue = ref('')
       const innerValue = ref(undefined)
-      const searchList = ref<Array<InnerSearchItem>>([])
+      const searchList = ref([])
       function show() {
         visible.value = true
       }
@@ -65,16 +60,16 @@
       }
       const permissionStore = usePermissionStore()
       function transformRoutes(
-        routes: RouteRecordRaw[],
-        parentPath: string = '/'
-      ): InnerSearchItem[] {
-        const list: InnerSearchItem[] = []
+        routes,
+        parentPath = '/'
+      ) {
+        const list = []
         routes
           .filter((it) => it.meta && it.meta.hidden !== true && it.path !== parentPath)
           .forEach((it) => {
-            const searchItem: InnerSearchItem = {
-              key: ((it.meta?.title as string) || '') + ':' + it.path,
-              title: it.meta ? (it.meta.title as string) : '',
+            const searchItem = {
+              key: ((it.meta?.title ) || '') + ':' + it.path,
+              title: it.meta ? (it.meta.title ) : '',
               disabled: false,
             }
             if (it.children && it.children.length > 0) {
@@ -86,7 +81,7 @@
         return list
       }
       const router = useRouter()
-      function onSelectItem(value: any) {
+      function onSelectItem(value) {
         console.log(value)
         const items = value.split(':')
         router.push(items[1]).then(() => {

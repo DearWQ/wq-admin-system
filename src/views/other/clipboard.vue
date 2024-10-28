@@ -12,7 +12,7 @@
   </a-card>
 </template>
 
-<script lang="ts" setup>
+<script setup>
   import { ref } from 'vue'
   import { useClipboard } from '@vueuse/core'
   import { Message } from '@arco-design/web-vue'

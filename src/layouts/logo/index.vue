@@ -1,6 +1,6 @@
 <template>
   <div class="logo-wrapper" :style="{ 'background-color': bgColor }">
-    <img v-if="showLogo" class="logo-img" src="../../assets/img_avatar.gif" />
+    <img alt="" v-if="showLogo" class="logo-img" src="../../assets/img_avatar.gif" />
     <div
       v-if="!appStore.isCollapse"
       :class="[!appStore.isCollapse || alwaysShow ? 'show-title' : 'close-title']"
@@ -10,9 +10,9 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
   import { computed } from 'vue'
-  import { projectName } from '../../setting'
+  import { projectName } from '@/setting'
   import useAppConfigStore from '@/store/modules/app-config'
   import { SideTheme, ThemeMode } from '@/store/types'
   defineProps({
