@@ -3,7 +3,7 @@ import * as turf from "@turf/turf";
 import * as Cesium from "cesium";
 class CreatePlaneEntity {
 //类型
-    static MARKTYPE='plane'
+    static MARKTYPE='surface'
     constructor(options) {
         //cesium实例
         this.MapViewer = options.viewer
@@ -166,14 +166,42 @@ class CreatePlaneEntity {
         }
     }
 
-    updatePosition({polygonPositions, polylinePositions}) {
-        this.pointList = polylinePositions
+    //更新区域位置
+    async updateEntity(pointList) {
+        this.planeEntity.polygon.hierarchy = new Cesium.CallbackProperty(function () {
+            return new Cesium.PolygonHierarchy(
+                pointList.map((item) => {
+                    return Cesium.Cartesian3.fromDegrees(item[0], item[1], item[2]);
+                })
+            );
+        }, false)
         this.planeEntity.polyline.positions = new Cesium.CallbackProperty(function () {
-            return polylinePositions.map((item) => {
+            return pointList.map((item) => {
                 return Cesium.Cartesian3.fromDegrees(item[0], item[1], item[2]);
             });
         }, false)
+
+        pointList.forEach((item, i) => {
+            this.pointEntityList[i].position = new Cesium.CallbackProperty(function () {
+                return Cesium.Cartesian3.fromDegrees(item[0], item[1], item[2])
+            }, false)
+        })
+
+        let polygon = turf.polygon([pointList]);
+        let center = turf.centroid(polygon).geometry.coordinates;
+        let updatedPositions = await Cesium.sampleTerrainMostDetailed(
+            this.MapViewer.terrainProvider,
+            [Cesium.Cartographic.fromDegrees(center[0], center[1])]
+        );
+
+        this.textLabelEntity.position = Cesium.Cartesian3.fromDegrees(
+            center[0],
+            center[1],
+            updatedPositions[0].height
+        )
+
     }
+
     updateHeight(height){
         if (this.planeEntity.polygon) {
             this.planeEntity.polygon.extrudedHeight=height

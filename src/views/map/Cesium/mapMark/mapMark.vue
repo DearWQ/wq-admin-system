@@ -12,18 +12,16 @@ const IconFont = Icon.addFromIconFontCn({
 });
 
 const cesiumContainer = ref(null)
-let viewer, handler;
+let viewer;
 onMounted(() => {
   viewer = initCesium(cesiumContainer.value)
+  mapHandle()
 })
 const current = ref(1);
-const bottom = ref(false);
-const data = reactive([]);
 const scrollbar = ref(true);
 
 const markEntityList=ref([])
 const getMarkList = () => {
-  bottom.value = true
 }
 
 const drawInfo = ref([
@@ -106,6 +104,53 @@ const startDraw = (onClick) => {
   };
 }
 
+let handle;
+const mapHandle=()=>{
+  if(!handle){
+    handle = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas)
+  }
+  handle.setInputAction((e)=> {
+    removeMarkHighlight()
+    const pickInfo=viewer.scene.pick(e.position)
+    if(!pickInfo)return;
+    if(pickInfo?.id?.markId){
+      const markId=pickInfo?.id?.markId
+      markEntityList.value.forEach(mark=>{
+        if(mark.markId===markId){
+          mark.showHighlight()
+        }
+      })
+    }
+
+  },Cesium.ScreenSpaceEventType.LEFT_CLICK)
+  handle.setInputAction((e)=>{
+    markEntityList.value.forEach(mark=>{
+      mark.removeHover()
+    })
+    const pickInfo=viewer.scene.pick(e.startPosition)
+    viewer.container.style.cursor='default';
+    if(pickInfo?.id){
+      viewer.container.style.cursor='pointer';
+    }
+    if(pickInfo?.id?.markId){
+      const markId=pickInfo?.id?.markId
+      markEntityList.value.forEach(mark=>{
+        if(mark.markId===markId){
+          mark.hover()
+        }else{
+          mark.removeHover()
+        }
+      })
+    }
+
+  },Cesium.ScreenSpaceEventType.MOUSE_MOVE)
+}
+const removeMarkHighlight=()=>{
+  markEntityList.value.forEach(mark=>{
+    mark.hasHighlight=false;
+    mark.removeHighlight()
+  })
+}
 
 //选择颜色
 const chooseColor = ref({
@@ -153,17 +198,17 @@ const changeCurrentColor = (color, drawType,onClick) => {
         <template #header>
           标注列表
         </template>
-        <template #scroll-loading>
-          <div v-if="bottom">暂无更多数据</div>
-          <a-spin v-else/>
-        </template>
-        <a-list-item v-for="item of data">{{ item }}</a-list-item>
+<!--        <template #scroll-loading>-->
+<!--          <div v-if="markEntityList.length===0">暂无更多数据</div>-->
+<!--          <a-spin v-else/>-->
+<!--        </template>-->
+        <a-list-item v-for="item in markEntityList">{{ item.markName }}</a-list-item>
       </a-list>
     </div>
     <div id="cesiumContainer" ref="cesiumContainer" class="cesiumContainer">
       <div class="draw-tool">
         <div v-for="draw in drawInfo" :key="draw.drawType" class="draw-row" @click="handleDraw(draw.drawType,draw.onClick)">
-          <a-popover :title="draw.label" position="left" trigger="click">
+          <a-popover :title="draw.label" position="left">
             <icon-font :size="24" :style="{color:chooseColor[draw.drawType+'Color']}" :type="draw.iconType"/>
             <template #content>
               <div class="draw_color">

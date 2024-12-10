@@ -1,12 +1,14 @@
 import * as Cesium from "cesium";
 class CreatePointEntity {
+    //类型
+    static MARKTYPE='point'
     constructor(options) {
         //cesium实例
         this.MapViewer = options.viewer
         //点的实例ID
-        this.markId=options.pointId;
-        //pointName
-        this.pointName=options.pointName;
+        this.markId=options.markId;
+        //markName
+        this.markName=options.markName;
         //点配置
         this.pointConfig=options.pointConfig;
         //
@@ -29,7 +31,7 @@ class CreatePointEntity {
             position:  Cesium.Cartesian3.fromDegrees(this.pointList[0], this.pointList[1], this.pointList[2]),
             label: {
                 // 文本。支持显式换行符“ \ n”
-                text: this.pointName,
+                text: this.markName,
                 // 字体样式，以CSS语法指定字体
                 font: "12px",
                 // 字体颜色
@@ -107,9 +109,9 @@ class CreatePointEntity {
             show:this.display
         });
     }
-    editTextName(pointName) {
-        this.pointName=pointName;
-        this.poinEntity.label.text = pointName;
+    editTextName(markName) {
+        this.markName=markName;
+        this.poinEntity.label.text = markName;
     }
     editColor(color) {
         this.color=color;
@@ -154,6 +156,68 @@ class CreatePointEntity {
         }
         if(this.pointTextEntity){
             this.MapViewer.entities.remove(this.pointTextEntity);
+        }
+    }
+    editHandle() {
+        if(!this.handle){
+            this.handle=new Cesium.ScreenSpaceEventHandler(this.MapViewer.scene.canvas);
+        }
+
+        let clickPoint,
+            hasAreaPointMove=false,
+            clickPosition = {lng: "", lat: "", height: ""};
+        this.handle.setInputAction((e) => {
+            clickPoint = this.MapViewer.scene.pick(e.position);
+            if (!clickPoint || !clickPoint?.id?.pointId) return;
+            hasAreaPointMove=true
+            this.MapViewer.scene.screenSpaceCameraController.enableRotate = false;
+            let { lng, lat, alt } =  pickElevationInfo(this.MapViewer, e.position);
+            //获取标注点的经纬度
+            clickPosition.lng = lng; // 经度
+            clickPosition.lat = lat; // 纬度
+            clickPosition.height = alt;
+            //修改鼠标样式
+            this.MapViewer.container.style.cursor = "grabbing";
+        }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+
+        this.handle.setInputAction(async (movement) => {
+            const position = movement.endPosition; // arg有startPosition与endPosition两个属性，即移动前后的位置信息：Cartesian2对象
+            if (!position||!hasAreaPointMove) return;
+            let { lng, lat, alt } =  pickElevationInfo(this.MapViewer, movement.endPosition);
+            console.log(alt)
+            //获取标注点的经纬度
+            clickPosition.lng = lng; // 经度
+            clickPosition.lat = lat; // 纬度
+            clickPosition.height = alt;
+            //鼠标移动的是否是点
+            if (clickPoint?.id&&clickPoint?.id?.pointId) {
+
+                //更新当前点Entity的位置
+                clickPoint.id.position = Cesium.Cartesian3.fromDegrees(
+                    clickPosition.lng,
+                    clickPosition.lat,
+                    clickPosition.height
+                );
+                //更改当前选中区域Entity的集合点中所选择点的坐标
+                this.pointPosition = [
+                    clickPosition.lng,
+                    clickPosition.lat,
+                    clickPosition.height,
+                ];
+                //最后整体更新区域的坐标
+                await this.updatePosition(this.pointPosition);
+            }
+        }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+        this.handle.setInputAction((movement) => {
+            this.MapViewer.scene.screenSpaceCameraController.enableRotate = true;
+            hasAreaPointMove=false
+            this.MapViewer.container.style.cursor = "default";
+        }, Cesium.ScreenSpaceEventType.LEFT_UP);
+    }
+    removeHandle(){
+        if(this.handle){
+            this.handle.destroy()
+            this.handle=null
         }
     }
 }

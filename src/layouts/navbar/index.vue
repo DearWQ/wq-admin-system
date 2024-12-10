@@ -17,11 +17,14 @@
 <script >
   export default {
     name: "NavBar",
-  };    
+  };
 </script>
-<script   setup>
+<script setup>
   import useAppConfigStore from '@/store/modules/app-config'
   import VAWavatar from "@/layouts/avatar/index.vue";
+  import ActionItems from '@/layouts/actions/index.vue'
+  import Humburger from '@/layouts/humburger/index.vue'
+  import Breadcrumb from '@/layouts/breadcrumb/index.vue'
   const appStore = useAppConfigStore()
 </script>
 <style scoped lang="less">

@@ -66,5 +66,8 @@ export default defineConfig(({ mode }) => {
     server: {
       open: true,
     },
+    define: {
+      __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false, // 或者 true，根据你的需求
+    },
   }
 })

@@ -107,7 +107,6 @@ const initCesium2= async ()=>{
 onMounted(async () => {
   viewer= initCesium(cesiumContainer.value)
 
-
   //Primitive方式
   var pointPrimitives = viewer.scene.primitives.add(
       new Cesium.PointPrimitiveCollection()

@@ -28,7 +28,7 @@ class CreateLineEntity {
     createLine(polyline) {
         this.lineEntity = this.MapViewer.entities.add({
             polyline,
-            markId: "line_" + this.markId,
+            markId: this.markId,
             show:this.display
         });
     }
@@ -56,8 +56,8 @@ class CreateLineEntity {
                     clampToGround: true,
                 },
                 show: true,
-                markId: "point_" + this.markId,
-                pointId: 'point_' + new Date().getTime(),
+                markId: this.markId,
+                pointId: 'point_' + Cesium.createGuid(),
                 position: new Cesium.CallbackProperty(function () {
                     return Cesium.Cartesian3.fromDegrees(position[0], position[1], position[2])
                 }, false),
@@ -76,8 +76,8 @@ class CreateLineEntity {
                 },
                 show: true,
                 hasCheck: true,//是否是确认点
-                markId: "point_" + this.markId,
-                pointId: 'point_' + new Date().getTime(),
+                markId: this.markId,
+                pointId: 'point_' + Cesium.createGuid(),
                 position: new Cesium.CallbackProperty(function () {
                     return Cesium.Cartesian3.fromDegrees(position[0], position[1], position[2])
                 }, false),
@@ -101,9 +101,20 @@ class CreateLineEntity {
 
 
     createTextLabel() {
-        const [lng, lat,height] = this.pointList[Math.ceil(this.pointList.length / 2)];
+        const [lng, lat,height] = this.pointList[Math.floor(this.pointList.length / 2)];
+        let  position=new Cesium.CallbackProperty(function () {
+            return Cesium.Cartesian3.fromDegrees(lng, lat,height)
+        }, false)
+        if(this.pointList.length%2===0){
+            const index=Math.floor(this.pointList.length / 2);
+            const left=Cesium.Cartesian3.fromDegrees(this.pointList[index-1][0], this.pointList[index-1][1],this.pointList[index-1][2]);
+            const right=Cesium.Cartesian3.fromDegrees(this.pointList[index][0], this.pointList[index][1],this.pointList[index][2]);
+            position=new Cesium.CallbackProperty(function () {
+                return Cesium.Cartesian3.midpoint(left, right, new Cesium.Cartesian3());
+            }, false)
+        }
         this.lineTextLabelEntity = this.MapViewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(lng, lat,height),
+            position,
             label: {
                 // 文本。支持显式换行符“ \ n”
                 text: this.markName,
@@ -129,11 +140,32 @@ class CreateLineEntity {
                 // 是否显示
                 show: true,
             },
-            markId: "lineText_"+this.markId,
+            markId: this.markId,
             show:this.display
         });
     }
+    //更新区域位置
+    async updateEntity(pointList) {
+        this.lineEntity.polyline.positions = new Cesium.CallbackProperty(function () {
+            return pointList.map((item) => {
+                return Cesium.Cartesian3.fromDegrees(item[0], item[1], item[2]);
+            });
+        }, false)
+        const [lng, lat,height] = this.pointList[Math.floor(this.pointList.length / 2)];
+        let position=new Cesium.CallbackProperty(function () {
+            return Cesium.Cartesian3.fromDegrees(lng, lat,height)
+        }, false)
+        if(this.pointList.length%2===0){
+            const index=Math.floor(this.pointList.length / 2);
+            const left=Cesium.Cartesian3.fromDegrees(this.pointList[index-1][0], this.pointList[index-1][1],this.pointList[index-1][2]);
+            const right=Cesium.Cartesian3.fromDegrees(this.pointList[index][0], this.pointList[index][1],this.pointList[index][2]);
+            position=new Cesium.CallbackProperty(function () {
+                return Cesium.Cartesian3.midpoint(left, right, new Cesium.Cartesian3());
+            }, false)
+        }
 
+        this.lineTextLabelEntity.position=position
+    }
     editTextName(markName) {
         this.markName = markName;
         this.lineTextLabelEntity.label.text = markName;
@@ -170,8 +202,8 @@ class CreateLineEntity {
                             clampToGround: true,
                         },
                         show: true,
-                        markId: "point_" + this.markId,
-                        pointId: 'point_' + new Date().getTime(),
+                        markId:this.markId,
+                        pointId: 'point_' + Cesium.createGuid(),
                         position: new Cesium.CallbackProperty(function () {
                             return Cesium.Cartesian3.fromDegrees(item[0], item[1], item[2])
                         }, false),
@@ -237,6 +269,93 @@ class CreateLineEntity {
             this.pointEntityList.forEach(item=>{
                 this.MapViewer.entities.remove(item)
             })
+        }
+    }
+    editHandle() {
+        if(!this.handle){
+            this.handle=new Cesium.ScreenSpaceEventHandler(this.MapViewer.scene.canvas);
+        }
+
+        let clickPoint,
+            cartographic,
+            pointMoveIndex,
+            hasAreaPointMove=false,
+            clickPosition = {lng: "", lat: "", height: ""};
+        this.handle.setInputAction((e) => {
+            clickPoint = this.MapViewer.scene.pick(e.position);
+            if (!clickPoint || !clickPoint?.id?.pointId) return;
+            hasAreaPointMove=true
+            //获取当前移动点的索引
+            pointMoveIndex = this.pointEntityList.findIndex(
+                (item) => item.pointId === clickPoint.id.pointId
+            );
+            this.MapViewer.scene.screenSpaceCameraController.enableRotate = false;
+            const markPotions = clickPoint.id.position;
+            let originalPosition = markPotions.getValue(Cesium.JulianDate.now());
+            // 转换笛卡尔坐标为地理坐标
+            cartographic = Cesium.Ellipsoid.WGS84.cartesianToCartographic(originalPosition);
+            //获取标注点的经纬度
+            clickPosition.lng = Cesium.Math.toDegrees(cartographic.longitude); // 经度
+            clickPosition.lat = Cesium.Math.toDegrees(cartographic.latitude); // 纬度
+            clickPosition.height = cartographic.height;
+            //修改鼠标样式
+            this.MapViewer.container.style.cursor = "grabbing";
+        }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+
+        this.handle.setInputAction(async (movement) => {
+            const position = movement.endPosition; // arg有startPosition与endPosition两个属性，即移动前后的位置信息：Cartesian2对象
+            if (!position||!hasAreaPointMove) return;
+            let ray = this.MapViewer.camera.getPickRay(position); //获取一条射线
+            let movePosition = this.MapViewer.scene.globe.pick(ray, this.MapViewer.scene);
+            let movePositionInfo = Cesium.Cartographic.fromCartesian(movePosition);
+            clickPosition.lng = Cesium.Math.toDegrees(movePositionInfo.longitude);
+            clickPosition.lat = Cesium.Math.toDegrees(movePositionInfo.latitude);
+            clickPosition.height = movePositionInfo.height;
+
+            console.log(clickPoint?.id?.pointId)
+            //鼠标移动的是否是点
+            if (clickPoint?.id&&clickPoint?.id?.pointId) {
+
+                //更新当前点Entity的位置
+                clickPoint.id.position = Cesium.Cartesian3.fromDegrees(
+                    clickPosition.lng,
+                    clickPosition.lat,
+                    clickPosition.height
+                );
+                //更改当前选中区域Entity的集合点中所选择点的坐标
+                this.pointList[pointMoveIndex] = [
+                    clickPosition.lng,
+                    clickPosition.lat,
+                    clickPosition.height,
+                ];
+                //当前移动的是第一个点，则更新最后一个点的位置也要更新形成闭环
+                if (pointMoveIndex === 0) {
+                    this.pointList[
+                    this.pointList.length - 1
+                        ] = [clickPosition.lng, clickPosition.lat, clickPosition.height];
+                }
+                //当前移动的是最后一个点，则更新第一个点的位置也要更新形成闭环
+                if (pointMoveIndex === this.pointList.length - 1) {
+                    this.pointList[0] = [
+                        clickPosition.lng,
+                        clickPosition.lat,
+                        clickPosition.height,
+                    ];
+                }
+                //最后整体更新区域的坐标
+                await this.updateEntity(this.pointList);
+            }
+        }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+        this.handle.setInputAction((movement) => {
+            this.MapViewer.scene.screenSpaceCameraController.enableRotate = true;
+            hasAreaPointMove=false
+            this.MapViewer.container.style.cursor = "default";
+        }, Cesium.ScreenSpaceEventType.LEFT_UP);
+    }
+    removeHandle(){
+        if(this.handle){
+            this.handle.destroy()
+            this.handle=null
         }
     }
 }

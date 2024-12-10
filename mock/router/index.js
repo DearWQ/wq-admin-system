@@ -95,6 +95,11 @@ export const adminRoutes = [
         menuUrl: '/list/monthly-schedule-list',
         menuName: '月日程',
       },
+      {
+        parentPath: '/calendar',
+        menuUrl: '/list/calendar',
+        menuName: '日历',
+      },
     ],
   },
   {

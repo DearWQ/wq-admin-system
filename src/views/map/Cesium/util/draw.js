@@ -47,8 +47,8 @@ class Draw {
             let {lng, lat, alt} = pickElevationInfo(this.viewer, click.position)
             const pointEntityInfo = new CreatePointEntity({
                 viewer: this.viewer,
-                pointId: Cesium.createGuid(),
-                pointName: this.config.markName,
+                markId: Cesium.createGuid(),
+                markName: this.config.markName,
                 pointImage: pointer2,
                 pointTextImage: pointer4,
                 pointList: [lng, lat, alt],
@@ -215,9 +215,6 @@ class Draw {
             circleEntity.addTextLabel();
             circleEntity.setDistance();
             circleEntity.drawArc();
-            this.viewer.scene.screenSpaceCameraController.enableRotate = true;
-            this.viewer.scene.screenSpaceCameraController.enableTranslate = true;
-            this.viewer.scene.screenSpaceCameraController.enableZoom = true;
             // 调用回调函数
             if (this.onDrawComplete) {
                 this.onDrawComplete('circle', circleEntity);
@@ -375,7 +372,7 @@ class Draw {
                 if (!lineInfo) {
                     lineInfo = new CreateLineEntity({
                         viewer: this.viewer,
-                        mrkId: Cesium.createGuid(),
+                        markId: Cesium.createGuid(),
                         markName: this.config.markName,
                         display: true,
                         lineColor: this.config.color,

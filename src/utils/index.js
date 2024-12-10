@@ -89,3 +89,19 @@ export function getCurDay(num = 0) {
     }
     return `${year}-${month}-${day}`
 }
+
+/**
+ * 获取当天时间前后七天时间
+ * @param day day>0 当天时间的后几天 day<0 当天时间前几天
+ * @returns {string}
+ */
+export function getRecentDate(day) {
+    let date1 = new Date(),
+        time1 = date1.getFullYear() + "-" + (date1.getMonth() + 1) + "-" + date1.getDate();//time1表示当前时间
+    let date2 = new Date(date1);
+    date2.setDate(date1.getDate() + day);
+    const y = date2.getFullYear();
+    const m = (date2.getMonth() + 1) > 9 ? (date2.getMonth() + 1) : '0' + (date2.getMonth() + 1)
+    const d = date2.getDate() > 9 ? date2.getDate() : '0' + date2.getDate()
+    return y + "-" + m + "-" + d;
+}

@@ -8,7 +8,6 @@
         <NotificationsIcon />
       </a-badge>
       <template #content>
-        adsfadsf
         <MessageContent />
       </template>
     </a-popover>
@@ -22,7 +21,7 @@
   </div>
 </template>
 
-<script  setup>
+<script setup>
   import { ref } from 'vue'
   import { Message } from '@arco-design/web-vue'
   import {
@@ -33,6 +32,7 @@
   import { useFullscreen } from '@vueuse/core'
   import useEmit from '@/hooks/useEmit'
   import useAppConfigStore from '@/store/modules/app-config'
+  import MessageContent from "@/components/MessageContent/MessageContent.vue";
   const showSearchContent = ref(false)
   const searchContent = ref('')
   const badgeValue = ref(2)
