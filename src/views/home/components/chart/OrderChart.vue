@@ -2,7 +2,7 @@
     <div ref="orderChartWrapper" style="height: 100%"> </div>
 </template>
   
-<script >
+<script lang="ts">
 import useEcharts from '@/hooks/useEcharts'
 import { defineComponent, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { dispose, graphic } from 'echarts/core'
@@ -10,7 +10,7 @@ export default defineComponent({
     name: 'OrderChart',
     setup() {
         const loading = ref(true)
-        const orderChartWrapper = ref(null)
+        const orderChartWrapper = ref<HTMLDivElement | null>(null)
         const init = () => {
             const option = {
                 tooltip: {
@@ -66,16 +66,16 @@ export default defineComponent({
             setTimeout(() => {
                 loading.value = false
                 nextTick(() => {
-                    useEcharts(orderChartWrapper.value).setOption(option)
+                    useEcharts(orderChartWrapper.value as HTMLDivElement).setOption(option)
                 })
             }, 100)
         }
         const updateChart = () => {
-            useEcharts(orderChartWrapper.value).resize()
+            useEcharts(orderChartWrapper.value as HTMLDivElement).resize()
         }
         onMounted(init)
         onBeforeUnmount(() => {
-            dispose(orderChartWrapper.value)
+            dispose(orderChartWrapper.value as HTMLDivElement)
         })
         return {
             loading,

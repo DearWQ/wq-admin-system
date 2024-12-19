@@ -101,7 +101,7 @@
                    @selection-change="onSelectionChange">
             <template #columns>
               <a-table-column v-for="item of tableColumns" :key="item.key" :align="item.align"
-                              :data-index="(item.key)" :fixed="item.fixed" :title="(item.title)"
+                              :data-index="(item.key as string)" :fixed="item.fixed" :title="(item.title as string)"
                               :width="item.width">
                 <template v-if="item.key === 'index'" #cell="{ rowIndex }">
                   {{ rowIndex + 1 }}
@@ -130,15 +130,16 @@
   </div>
 </template>
 
-<script  setup>
+<script lang="ts" setup>
 import {post} from '@/api/http'
 import {getTableList} from '@/api/url'
 import {usePagination, useRowKey, useRowSelection, useTable, useTableColumn,} from '@/hooks/table'
+import {FormItem} from '@/types/components'
 import {Input, Message} from '@arco-design/web-vue'
 import {h, onMounted, ref} from 'vue'
+import type {Dayjs} from 'dayjs'
 
-
-const conditionItems = [
+const conditionItems: Array<FormItem> = [
   {
     key: 'name',
     label: '用户姓名',
@@ -148,7 +149,7 @@ const conditionItems = [
     reset: function () {
       this.value.value = ''
     },
-    render: (formItem) => {
+    render: (formItem: FormItem) => {
       return h(Input, {
         placeholder: '输入用户名',
         modelValue: formItem.value.value,
@@ -162,7 +163,7 @@ const conditionItems = [
     key: 'date',
     label: '创建日期',
     type: 'date',
-    value: ref(),
+    value: ref<Dayjs>(),
   },
   {
     key: 'sex',
@@ -188,7 +189,7 @@ const conditionItems = [
     key: 'time',
     label: '创建时间',
     type: 'time',
-    value: ref(''),
+    value: ref<string>(''),
   },
 ]
 const searchForm = ref({})
@@ -264,7 +265,7 @@ function onSearch() {
       '模拟查询成功，参数为：' +
       JSON.stringify(
           conditionItems.reduce((pre, cur) => {
-            ;(pre)[cur.key] = cur.value.value
+            ;(pre as any)[cur.key] = cur.value.value
             return pre
           }, {})
       )

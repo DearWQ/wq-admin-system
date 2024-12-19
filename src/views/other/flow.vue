@@ -7,20 +7,20 @@
   </a-card>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 // 参考地址： http://logic-flow.org/guide/start.html#logicflow%E6%98%AF%E4%BB%80%E4%B9%88 
   import { computed, nextTick, onMounted, ref, watch } from 'vue'
   import LogicFlow from '@logicflow/core'
   import { Control, Menu, DndPanel, Snapshot, NodeResize } from '@logicflow/extension'
   import '@logicflow/core/dist/style/index.css'
   import '@logicflow/extension/lib/style/index.css'
-  const lfConitanerRef = ref(null)
+  const lfConitanerRef = ref<HTMLElement | null>(null)
   LogicFlow.use(Control)
   LogicFlow.use(Menu)
   LogicFlow.use(DndPanel)
   LogicFlow.use(Snapshot)
   LogicFlow.use(NodeResize)
-  const lf = ref()
+  const lf = ref<LogicFlow>()
   const data = {
     // 节点
     nodes: [
@@ -70,7 +70,7 @@
 
   const options = computed(() => {
     return {
-      container: lfConitanerRef.value,
+      container: lfConitanerRef.value as HTMLElement,
       stopScrollGraph: true,
       stopZoomGraph: true,
       grid: {

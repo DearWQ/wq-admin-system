@@ -16,7 +16,7 @@
 import {computed, defineComponent, ref} from 'vue'
 import type { PropType } from 'vue'
 export default defineComponent({
-  name: 'ModalDialog',
+  name: 'MyDialog',
   props: {
     //是否显示弹窗
     showModal: {

@@ -1,7 +1,7 @@
 <template>
   <div class="exception-container">
     <div class="img-wrapper">
-      <img alt="" width="750" height="350" :src="statusImage" />
+      <img width="750" height="350" :src="statusImage" />
     </div>
     <div class="title">
       <div>{{ statusTip }}</div>
@@ -12,7 +12,7 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
   import image404 from '@/assets/img_404.png'
   import image403 from '@/assets/img_403.png'
   import image500 from '@/assets/img_500.png'

@@ -13,7 +13,7 @@
   >
     <section
       :class="[
-        appStore.layoutMode === 'ttb'
+        appStore.layoutMode == 'ttb'
           ? 'nav-bar-open-status__ttb'
           : !appStore.isCollapse
           ? 'nav-bar-open-status'
@@ -41,7 +41,7 @@
   </div>
 </template>
 
-<script  setup>
+<script lang="ts" setup>
   import { computed } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { useTitle } from '@vueuse/core'
@@ -55,7 +55,7 @@
   const router = useRouter()
   const route = useRoute()
   router.afterEach(() => {
-      useTitle(projectName + ' | ' + (route.meta.title))
+      useTitle(projectName + ' | ' + (route.meta.title as string))
   })
 </script>
 
@@ -94,7 +94,7 @@
   }
 
   .main-layout_padding-top__all {
-    padding-top: calc(@logoHeight);
+    padding-top: calc(@logoHeight + @tabHeight);
   }
 
   .main-layout_padding-top__logo {

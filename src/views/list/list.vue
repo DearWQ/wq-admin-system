@@ -5,7 +5,7 @@
         <a-col :span="6">
           <div class="header-wrapper">
             <div class="avatar-wrapper">
-              <img alt="" class="avatar" :src="item.avatar" />
+              <img class="avatar" :src="item.avatar" />
             </div>
             <div class="nick-wrapper">
               <span class="nick-name">{{ item.nickName }}</span>
@@ -31,7 +31,7 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
   import { post } from '@/api/http'
   import { getCommentList } from '@/api/url'
   import { usePagination, useTable } from '@/hooks/table'

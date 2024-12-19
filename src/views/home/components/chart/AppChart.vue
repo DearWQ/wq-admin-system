@@ -17,12 +17,12 @@
   </a-card>
 </template>
 
-<script setup>
+<script lang="ts" setup>
   import { dispose, graphic } from 'echarts/core'
   import useEcharts from '@/hooks/useEcharts'
   import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
   const loading = ref(true)
-  const salesChart = ref(null)
+  const salesChart = ref<HTMLDivElement | null>(null)
   const init = () => {
     const option = {
       grid: {
@@ -74,16 +74,16 @@
     setTimeout(() => {
       loading.value = false
       nextTick(() => {
-        useEcharts(salesChart.value).setOption(option)
+        useEcharts(salesChart.value as HTMLDivElement).setOption(option)
       })
     }, 1000)
   }
   const updateChart = () => {
-    useEcharts(salesChart.value).resize()
+    useEcharts(salesChart.value as HTMLDivElement).resize()
   }
   onMounted(init)
   onBeforeUnmount(() => {
-    dispose(salesChart.value)
+    dispose(salesChart.value as HTMLDivElement)
   })
 </script>
 

@@ -95,6 +95,11 @@ export const adminRoutes = [
         menuUrl: '/list/monthly-schedule-list',
         menuName: '月日程',
       },
+      {
+        parentPath: '/calendar',
+        menuUrl: '/list/calendar',
+        menuName: '日历',
+      },
     ],
   },
   {
@@ -346,14 +351,28 @@ export const adminRoutes = [
   },
   {
     menuUrl: '/map',
-    menuName: 'Cesium三维地图',
+    menuName: '地图',
     icon: 'icon-location',
-    localFilePath: '/map/Cesium',
     children: [
       {
         parentPath: '/map',
-        menuUrl: '/map/Cesium/mapMark/mapMark',
-        menuName: '地图标注',
+        menuUrl: '/map/baidu',
+        menuName: '百度地图',
+      },
+      {
+        parentPath: '/map',
+        menuUrl: '/map/gaode',
+        menuName: '高德地图',
+      },
+      {
+        parentPath: '/map',
+        menuUrl: '/map/openLayers/index',
+        menuName: 'OpenLayers地图',
+      },
+      {
+        parentPath: '/map',
+        menuUrl: '/map/Cesium/index',
+        menuName: 'Cesium三维地图',
       },
     ],
   },
@@ -527,6 +546,21 @@ export const editorRoutes = [
     iconPrefix: 'iconfont',
     icon: 'location',
     children: [
+      {
+        parentPath: '/map',
+        menuUrl: '/map/gaode',
+        menuName: '高德地图',
+      },
+      {
+        parentPath: '/map',
+        menuUrl: '/map/baidu',
+        menuName: '百度地图',
+      },
+      {
+        parentPath: '/map',
+        menuUrl: '/map/openLayers/index',
+        menuName: 'openLayers地图',
+      },
       {
         parentPath: '/map',
         menuUrl: '/map/Cesium/index',

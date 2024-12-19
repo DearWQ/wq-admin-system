@@ -11,7 +11,7 @@
       <a-col :span="8" v-for="(item, index) of qrcodeList" :key="index">
         <a-card :title="item.title">
           <div class="text-center">
-            <img alt="" :src="item.url" class="canvas" style="margin: 0 auto" />
+            <img :src="item.url" class="canvas" style="margin: 0 auto" />
           </div>
         </a-card>
       </a-col>
@@ -19,15 +19,18 @@
   </a-card>
 </template>
 
-<script  setup>
+<script lang="ts" setup>
   import { onMounted, reactive, ref } from 'vue'
   import Qrcode from 'qrcode'
   import logo from '@/assets/img_avatar.gif'
   import { Message } from '@arco-design/web-vue'
-
+  interface QrcodeItem {
+    title: string
+    url: string
+  }
   const qrText = ref('')
-  const qrcodeList = reactive([])
-  const generatorCode = (it) => {
+  const qrcodeList = reactive([] as Array<QrcodeItem>)
+  const generatorCode = (it: any) => {
     if (!qrText.value) {
       Message.error('请输入二维码文本内容')
       return
@@ -39,15 +42,15 @@
         dark: it.darkColor,
         light: it.lightColor,
       },
-    }).then((res) => {
+    }).then((res: any) => {
       qrcodeList.push({
         title: it.title,
         url: res,
-      })
+      } as QrcodeItem)
     })
   }
   const generatorCodeWithLogo = () => {
-    const canvas = document.getElementById('logoCanvas')
+    const canvas = document.getElementById('logoCanvas') as HTMLCanvasElement
     Qrcode.toCanvas(canvas, qrText.value, {
       width: 250,
     }).then(() => {

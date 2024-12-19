@@ -11,7 +11,7 @@
   </a-card>
 </template>
 
-<script  setup>
+<script lang="ts" setup>
   import { ref } from 'vue'
   const password1 = ref('')
   const password2 = ref('')

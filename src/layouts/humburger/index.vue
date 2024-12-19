@@ -8,7 +8,7 @@
   </span>
 </template>
 
-<script setup>
+<script lang="ts" setup>
   import { IconMenuFold as MenuFoldOutlined } from '@arco-design/web-vue/es/icon'
   import useAppConfigStore from '@/store/modules/app-config'
   const appStore = useAppConfigStore()

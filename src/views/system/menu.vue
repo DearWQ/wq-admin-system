@@ -21,9 +21,9 @@
               v-for="item of tableColumns"
               :key="item.key"
               :align="item.align"
-              :title="(item.title)"
+              :title="(item.title as string)"
               :width="item.width"
-              :data-index="(item.key)"
+              :data-index="(item.key as string)"
               :fixed="item.fixed"
             >
               <template v-if="item.key === 'index'" #cell="{ rowIndex }">
@@ -110,20 +110,24 @@
   </div>
 </template>
 
-<script  setup>
-  import { h, onMounted, ref } from 'vue'
+<script lang="ts" setup>
+  import { h, onMounted, ref, Ref } from 'vue'
   import { post } from '@/api/http'
   import { getMenuList } from '@/api/url'
   import { useRowKey, useTable, useTableColumn } from '@/hooks/table'
-
+  import { ModalDialogType, FormItem } from '@/types/components'
   import { Message, Modal } from '@arco-design/web-vue'
   import ModalDialog from "@/components/MyDialog/ModalDialog.vue";
-
+  interface TreeItem {
+    title: string
+    key: string
+    children?: TreeItem[]
+  }
   const { dataList, tableLoading, handleSuccess} = useTable();
   const actionModel = ref('add')
-  let tempItem = null
-  const treeData = ref([])
-  const modalDialog = ref(null)
+  let tempItem: { menuUrl: string } | null = null
+  const treeData = ref<Array<TreeItem>>([])
+  const modalDialog = ref<ModalDialogType | null>(null)
   const rowKey = useRowKey('menuUrl')
   const tableColumns = useTableColumn([
     {
@@ -271,14 +275,14 @@
         this.value.value = false
       },
     },
-  ]
+  ] as Array<FormItem>
 
-  function transformRoutes(routes, parentPath) {
-    const list = []
+  function transformRoutes(routes: any[], parentPath: string = '/'): TreeItem[] {
+    const list: TreeItem[] = []
     routes
       .filter((it) => it.hidden !== true && it.fullPath !== parentPath)
       .forEach((it) => {
-        const searchItem= {
+        const searchItem: TreeItem = {
           key: it.menuUrl,
           title: it.menuName,
         }
@@ -305,18 +309,18 @@
     itemFormOptions.forEach((it) => {
       it.reset && it.reset()
       if (it.key === 'menuUrl') {
-        ;(it.disabled).value = false
+        ;(it.disabled as Ref<boolean>).value = false
       }
     })
     modalDialog.value?.show()
   }
-  function onUpdateItem(item) {
+  function onUpdateItem(item: any) {
     actionModel.value = 'edit'
     tempItem = item
     itemFormOptions.forEach((it) => {
       it.value.value = item[it.key] || null
       if (it.key === 'menuUrl' && it.disabled) {
-        ;(it.disabled).value = true
+        ;(it.disabled as Ref<boolean>).value = true
       }
     })
     modalDialog.value?.show()
@@ -329,7 +333,7 @@
           '模拟创建菜单成功, 参数为:' +
             JSON.stringify(
               itemFormOptions.reduce((pre, cur) => {
-                ;(pre)[cur.key] = cur.value.value || ''
+                ;(pre as any)[cur.key] = cur.value.value || ''
                 return pre
               }, {})
             )
@@ -342,7 +346,7 @@
           '模拟修改菜单成功, 参数为:' +
             JSON.stringify(
               itemFormOptions.reduce((pre, cur) => {
-                ;(pre)[cur.key] = cur.value.value || ''
+                ;(pre as any)[cur.key] = cur.value.value || ''
                 return pre
               }, {})
             )
@@ -350,7 +354,7 @@
       }
     }
   }
-  function onDeleteItem(item) {
+  function onDeleteItem(item: any) {
     Modal.confirm({
       title: '提示',
       content: '是否要删除此数据？',

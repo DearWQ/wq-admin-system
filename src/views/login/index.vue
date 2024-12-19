@@ -2,7 +2,7 @@
   <div class="login-container">
     <div class="left">
       <div class="content">
-        <img alt="" style="border-radius: 50%" :src="logo" />
+        <img style="border-radius: 50%" :src="logo" />
         <div class="project-name">{{ projectName }}</div>
         <div class="login-logo">
           <img alt="" src="https://www.yilailu.com/static/icon/designer.png">
@@ -69,13 +69,15 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
   import { ref } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
+  import imageBg from '@/assets/img_login_bg.png'
   import logo from '@/assets/img_avatar.gif'
-  import { post} from '@/api/http';
+  import { post, Response } from '@/api/http';
   import { login } from '@/api/url'
   import { Message } from '@arco-design/web-vue'
+  import { UserState } from '@/store/types'
   import setting from '../../setting'
   import useUserStore from '@/store/modules/user'
     const projectName = setting.projectName
@@ -93,12 +95,12 @@
           password: password.value,
       }
       })
-        .then(({ data }) => {
-          userStore.saveUser(data).then(() => {
-            console.log(route.query.redirect ? (route.query.redirect) : '/')
+        .then(({ data }: Response) => {
+          userStore.saveUser(data as UserState).then(() => {
+            console.log(route.query.redirect ? (route.query.redirect as string) : '/')
             router
               .replace({
-                path: route.query.redirect ? (route.query.redirect) : '/',
+                path: route.query.redirect ? (route.query.redirect as string) : '/',
               })
               .then(() => {
                 Message.success('登录成功，欢迎：' + username.value)

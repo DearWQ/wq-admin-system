@@ -4,15 +4,16 @@
     src="https://www.yilailu.com/"
     width="100%"
     :height="height + 'px'"
+    frameborder="0"
   ></iframe>
 </template>
 
-<script  setup>
+<script lang="ts" setup>
   import { onMounted, ref } from 'vue'
 
-  const frame = ref()
+  const frame = ref<HTMLIFrameElement>()
   const height = ref(0)
   onMounted(() => {
-    height.value = frame.value?.parentElement?.clientHeight
+    height.value = frame.value!.parentElement!.clientHeight
   })
 </script>

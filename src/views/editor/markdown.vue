@@ -21,7 +21,7 @@
   </div>
 </template>
 
-<script  setup>
+<script lang="ts" setup>
 import MarkdownEditor from "@/components/Editor/MarkdownEditor/MarkdownEditor.vue";
 import { ref } from 'vue'
 

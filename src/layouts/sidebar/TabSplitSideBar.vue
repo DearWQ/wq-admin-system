@@ -27,22 +27,21 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
   import { computed, onMounted, ref, shallowReactive, watch } from 'vue'
-  import {  useRoute, useRouter } from 'vue-router'
-  import { isExternal } from '@/utils'
+  import { RouteLocationNormalizedLoaded, RouteRecordRaw, useRoute, useRouter } from 'vue-router'
+  import { isExternal } from '../../utils'
   import usePermissionStore from '@/store/modules/permission'
   import useAppConfigStore from '@/store/modules/app-config'
   import { transformSplitTabMenu } from '@/store/help'
-  import { SideTheme } from '@/store/types'
-  import ScrollerMenu from "@/layouts/sidebar/components/ScrollerMenu.vue";
+  import { SideTheme, SplitTab } from '@/store/types'
   const props = defineProps({
     showLogo: { type: Boolean, default: true },
   });
       const appStore = useAppConfigStore()
       const permissionStore = usePermissionStore()
-      const tabs = shallowReactive([])
-      const routes = shallowReactive([])
+      const tabs = shallowReactive<Array<SplitTab>>([])
+      const routes = shallowReactive<Array<RouteRecordRaw>>([])
       const route = useRoute()
       const router = useRouter()
       watch(
@@ -56,7 +55,7 @@
         tabs.push(...transformSplitTabMenu(permissionStore.getPermissionSplitTabs))
         doChangeTab(route)
       })
-      function doChangeTab(route) {
+      function doChangeTab(route: RouteLocationNormalizedLoaded) {
         const matchedRoutes = route.matched
         if (matchedRoutes && matchedRoutes.length > 0) {
           tabs.forEach((it) => {
@@ -64,7 +63,7 @@
               it.checked.value = true
               if (it.children) {
                 routes.length = 0
-                routes.push(...(it.children))
+                routes.push(...(it.children as Array<RouteRecordRaw>))
               }
             } else {
               it.checked.value = false
@@ -72,13 +71,13 @@
           })
         }
       }
-      function changeTab(item) {
+      function changeTab(item: SplitTab) {
         tabs.forEach((it) => {
           it.checked.value = it.fullPath === item.fullPath
         })
         findPath(item)
       }
-      function findPath(item) {
+      function findPath(item: SplitTab) {
         if (item.children && item.children.length > 0) {
           const firstItem = item.children[0]
           console.log(firstItem)
@@ -90,18 +89,18 @@
               fullPath: firstItem.path,
               children: firstItem.children,
               checked: ref(false),
-            } )
+            } as SplitTab)
           } else {
-            if (isExternal(firstItem.path )) {
+            if (isExternal(firstItem.path as string)) {
               routes.length = 0
-              routes.push(...(item.children ))
+              routes.push(...(item.children as Array<RouteRecordRaw>))
               window.open(firstItem.path)
             } else {
               router.push(firstItem.path || '/').then((error) => {
                 if (error) {
                   if (firstItem.path === route.path || firstItem.path === route.fullPath) {
                     routes.length = 0
-                    routes.push(...(item.children))
+                    routes.push(...(item.children as Array<RouteRecordRaw>))
                   }
                 }
               })

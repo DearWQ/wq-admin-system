@@ -12,7 +12,7 @@
         <a-table :bordered="false" :loading="tableLoading" :data="dataList" :row-key="rowKey" :pagination="false">
           <template #columns>
             <a-table-column v-for="item of tableColumns" :key="item.key" :align="item.align"
-              :title="(item.title)" :width="item.width" :data-index="(item.key)"
+              :title="(item.title as string)" :width="item.width" :data-index="(item.key as string)"
               :fixed="item.fixed">
               <template v-if="item.key === 'actions'" #cell="{ record }">
                 <a-space>
@@ -70,15 +70,24 @@
   </div>
 </template>
 
-<script  setup>
+<script lang="ts" setup>
 import { getDepartmentList } from '@/api/url'
 import { useRowKey, useTable, useTableColumn } from '@/hooks/table'
 import { onMounted, reactive, ref } from 'vue'
 import _ from 'lodash-es'
 import usePost from '@/hooks/usePost'
 import { Form, Message, Modal } from '@arco-design/web-vue'
+import type { ModalDialogType } from '@/types/components'
 import ModalDialog from "@/components/MyDialog/ModalDialog.vue";
-
+interface Department {
+  parentId: number | undefined
+  id: number
+  name: string
+  depCode: string
+  order: number
+  status: number
+  children?: Array<Department>
+}
 const { dataList, tableLoading, handleSuccess} = useTable();
 const DP_CODE_FLAG = 'admin_dp_code_'
 const tableColumns = useTableColumn([
@@ -108,7 +117,7 @@ const tableColumns = useTableColumn([
     dataIndex: 'actions',
   },
 ])
-const departmentModel = reactive({
+const departmentModel = reactive<Department>({
   parentId: undefined,
   id: 0,
   name: '',
@@ -116,10 +125,10 @@ const departmentModel = reactive({
   order: 1,
   status: 1,
 })
-const formRef = ref()
+const formRef = ref<typeof Form>()
 const dialogTitle = ref()
 const rowKey = useRowKey('id')
-const modalDialog = ref(null)
+const modalDialog = ref<ModalDialogType | null>(null)
 const post = usePost()
 function doRefresh() {
   post({
@@ -131,7 +140,7 @@ function doRefresh() {
     return data
   })
 }
-function filterItems(srcArray, filterItem) {
+function filterItems(srcArray: Array<Department>, filterItem: Department) {
   for (let index = 0; index < srcArray.length; index++) {
     const element = srcArray[index]
     if (element.id === filterItem.id) {
@@ -143,12 +152,12 @@ function filterItems(srcArray, filterItem) {
       return
     } else {
       if (!_.isEmpty(element.children)) {
-        filterItems(element.children, filterItem)
+        filterItems(element.children as Array<Department>, filterItem)
       }
     }
   }
 }
-const onDeleteItem = (item) => {
+const onDeleteItem = (item: any) => {
   Modal.confirm({
     title: '提示',
     content: '确定要删除此信息，删除后不可恢复？',
@@ -170,21 +179,21 @@ function onAddItem() {
 function onDataFormConfirm() {
   formRef.value
     ?.validate()
-    .then((error) => {
+    .then((error: any) => {
       if (error) {
         return
       }
       modalDialog.value?.close()
       Message.success('模拟部门添加/编辑成功，数据为：' + JSON.stringify(departmentModel))
     })
-    .catch((error) => {
+    .catch((error: any) => {
       console.log('error', error)
     })
 }
-function onUpdateItem(item) {
+function onUpdateItem(item: Department) {
   dialogTitle.value = '编辑部门'
   Object.keys(item).forEach((it) => {
-    ; (departmentModel )[it] = (item)[it]
+    ; (departmentModel as any)[it] = (item as any)[it]
   })
   departmentModel.parentId = item.parentId
   modalDialog.value?.toggle()

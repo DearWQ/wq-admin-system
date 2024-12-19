@@ -14,8 +14,8 @@
               v-for="item of tableColumns"
               :key="item.key"
               align="center"
-              :title="(item.title)"
-              :data-index="(item.key)"
+              :title="(item.title as string)"
+              :data-index="(item.key as string)"
             >
               <template v-if="item.key === 'index'" #cell="{ rowIndex }">
                 {{ rowIndex + 1 }}
@@ -35,7 +35,7 @@
   </div>
 </template>
 
-<script  setup>
+<script lang="ts" setup>
   import { post } from '@/api/http'
   import { getTableList } from '@/api/url'
   import { useTable, useTableColumn } from '@/hooks/table'
@@ -88,7 +88,7 @@
           .catch(console.log)
       }
       function exportExcel() {
-        const workSheet = XLSX.utils.table_to_sheet((tableRef.value).$el)
+        const workSheet = XLSX.utils.table_to_sheet((tableRef.value as any).$el)
         const workBook = XLSX.utils.book_new()
         XLSX.utils.book_append_sheet(workBook, workSheet, 'data报表')
         XLSX.writeFile(workBook, 'table-list.xlsx')

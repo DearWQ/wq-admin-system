@@ -21,8 +21,8 @@
               v-for="item of tableColumns"
               :key="item.key"
               align="center"
-              :title="(item.title)"
-              :data-index="(item.key)"
+              :title="(item.title as string)"
+              :data-index="(item.key as string)"
             >
               <template v-if="item.key === 'index'" #cell="{ rowIndex }">
                 {{ rowIndex + 1 }}
@@ -45,7 +45,7 @@
   </div>
 </template>
 
-<script  setup>
+<script lang="ts" setup>
   import { post } from '@/api/http'
   import { getTableList } from '@/api/url'
   import { useRowKey, useRowSelection, useTable, useTableColumn } from '@/hooks/table'
@@ -106,10 +106,10 @@
       return
     }
     const data = selectedRowKeys.value
-      .map((it) => {
-        return dataList.find((item) => item.id === it)
+      .map((it: any) => {
+        return dataList.find((item: any) => item.id === it)
       })
-      .map((it) => {
+      .map((it: any) => {
         return [
           it.nickName,
           it.gender === 0 ? '男' : '女',

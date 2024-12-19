@@ -1,24 +1,24 @@
 <template>
   <a-card title="图片裁剪" segmented>
     <div class="text-center">
-      <img alt="" :src="ImagePath" class="test-img" />
+      <img :src="ImagePath" class="test-img" />
       <a-button type="primary" size="small" @click="onCropper">裁剪图片</a-button>
     </div>
     <a-modal v-model:visible="showModal" title="图片裁剪" @ok="showModal = false">
       <div class="flex text-center justify-between">
         <div class="w-2/3">
-          <img alt="" id="cropperImg" :src="ImagePath" class="cropper-img" />
+          <img id="cropperImg" :src="ImagePath" class="cropper-img" />
         </div>
         <div class="w-1/3 flex flex-col justify-between items-center">
-          <div> <img alt="" style="width: 100px; height: 100px" :src="cropperImagePath" /> 100 * 100 </div>
-          <div> <img alt="" style="width: 50px; height: 50px" :src="cropperImagePath" /> 50 * 50 </div>
+          <div> <img style="width: 100px; height: 100px" :src="cropperImagePath" /> 100 * 100 </div>
+          <div> <img style="width: 50px; height: 50px" :src="cropperImagePath" /> 50 * 50 </div>
         </div>
       </div>
     </a-modal>
   </a-card>
 </template>
 
-<script  setup>
+<script lang="ts" setup>
   import Cropper from 'cropperjs'
   import 'cropperjs/dist/cropper.css'
   import ImagePath from '@/assets/img_avatar.gif'
@@ -30,7 +30,7 @@
   function onCropper() {
     showModal.value = true
     nextTick(() => {
-      const image = document.getElementById('cropperImg')
+      const image = document.getElementById('cropperImg') as HTMLImageElement
       const cropper = new Cropper(image, {
         autoCrop: false,
         viewMode: 1,

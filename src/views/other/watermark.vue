@@ -1,4 +1,4 @@
-<script  setup>
+<script lang="ts" setup>
 
 import useWaterMark from "@/hooks/useWaterMark";
 import {onMounted, ref} from "vue";
@@ -37,7 +37,7 @@ function uniqueObjectsDeep(arr) {
 const listAvailableFonts = async () => {
   if ("queryLocalFonts" in window) {
     try {
-      const availableFonts = await (window).queryLocalFonts();
+      const availableFonts = await (window as any).queryLocalFonts();
       if (!availableFonts.length) {
         return [];
       }

@@ -21,9 +21,9 @@
               v-for="item of tableColumns"
               :key="item.key"
               :align="item.align"
-              :title="(item.title)"
+              :title="(item.title as string)"
               :width="item.width"
-              :data-index="(item.key)"
+              :data-index="(item.key as string)"
               :fixed="item.fixed"
             >
               <template v-if="item.key === 'index'" #cell="{ rowIndex }">
@@ -34,7 +34,7 @@
               </template>
               <template v-else-if="item.key === 'avatar'" #cell="{ record }">
                 <a-avatar>
-                  <img :src="record.avatar" alt=""/>
+                  <img :src="record.avatar" />
                 </a-avatar>
               </template>
               <template v-else-if="item.key === 'actions'" #cell="{ record }">
@@ -95,10 +95,11 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
   import { post } from '@/api/http'
   import { getMenuListByRoleId, getRoleList } from '@/api/url'
   import { useRowKey, useTable, useTableColumn } from '@/hooks/table'
+  import { ModalDialogType, FormItem } from '@/types/components'
   import ModalDialog from "@/components/MyDialog/ModalDialog.vue";
   import { Message, Modal } from '@arco-design/web-vue'
   import { nextTick, onMounted, ref } from 'vue'
@@ -142,36 +143,36 @@
       type: 'textarea',
       placeholder: '请输入角色描述',
     },
-  ];
+  ] as FormItem[];
   const { 
     dataList,
     tableLoading,
     handleSuccess,
     indexColumn } = useTable();
   function handleMenuData(
-    menuData,
-    defaultCheckedKeys,
-    defaultExpandedKeys
+    menuData: Array<any>,
+    defaultCheckedKeys: Array<string>,
+    defaultExpandedKeys: Array<string>
   ) {
-    const tempMenus = []
+    const tempMenus = [] as Array<any>
     menuData.forEach((it) => {
-      const tempMenu = {}
+      const tempMenu = {} as any
       tempMenu.key = it.menuUrl
       tempMenu.title = it.menuName
-      defaultCheckedKeys.push(tempMenu.key)
+      defaultCheckedKeys.push(tempMenu.key as string)
       if (it.children) {
-        defaultExpandedKeys.push(tempMenu.key)
+        defaultExpandedKeys.push(tempMenu.key as string)
         tempMenu.children = handleMenuData(it.children, defaultCheckedKeys, defaultExpandedKeys)
       }
       tempMenus.push(tempMenu)
     })
     return tempMenus
   }
-  const modalDialogRef = ref(null)
-  const menuModalDialogRef = ref(null)
+  const modalDialogRef = ref<ModalDialogType | null>(null)
+  const menuModalDialogRef = ref<ModalDialogType | null>(null)
   const rowKey = useRowKey('id')
   const actionTitle = ref('添加角色')
-  const menuData = ref([])
+  const menuData = ref([] as Array<any>)
   const tableColumns = useTableColumn([
     indexColumn,
     {
@@ -200,8 +201,8 @@
       dataIndex: 'actions',
     },
   ])
-  const defaultCheckedKeys = ref([])
-  const defaultExpandedKeys = ref([])
+  const defaultCheckedKeys = ref([] as Array<string>)
+  const defaultExpandedKeys = ref([] as Array<string>)
   const formModel = ref({})
   function doRefresh() {
     post({
@@ -222,7 +223,7 @@
       }
     })
   }
-  function onUpdateItem(item) {
+  function onUpdateItem(item: any) {
     actionTitle.value = '编辑角色'
     modalDialogRef.value?.toggle()
     nextTick(() => {
@@ -239,7 +240,7 @@
       })
     })
   }
-  function onDeleteItem(data) {
+  function onDeleteItem(data: any) {
     Modal.confirm({
       title: '提示',
       content: '是否要删除此角色？',
@@ -257,14 +258,14 @@
         '模拟菜单添加成功，参数为：' +
           JSON.stringify(
             formItems.reduce((pre, cur) => {
-              ;(pre)[cur.key] = cur.value.value
+              ;(pre as any)[cur.key] = cur.value.value
               return pre
             }, {})
           )
       )
     }
   }
-  function onShowMenu(item) {
+  function onShowMenu(item: any) {
     post({
       url: getMenuListByRoleId,
       data: {

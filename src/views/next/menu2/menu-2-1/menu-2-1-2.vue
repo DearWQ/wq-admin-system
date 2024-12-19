@@ -4,7 +4,7 @@
   </a-card>
 </template>
 
-<script setup>
+<script lang="ts" setup>
   import { ref } from 'vue'
   const content = ref('井底的蜗牛')
 </script>

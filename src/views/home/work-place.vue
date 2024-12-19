@@ -92,7 +92,7 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { computed, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { random } from 'lodash-es'
@@ -102,7 +102,7 @@ const date = new Date();
 const currentDate = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate();
   const userStore = useUserStore()
   const avatar = computed(() => userStore.avatar)
-  const tempWaitingItems = reactive([])
+  const tempWaitingItems = reactive([] as Array<any>)
   const router = useRouter()
   const fastActionClick = ({ path = '/' }) => {
     router.push(path)

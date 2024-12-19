@@ -1,10 +1,10 @@
-<script setup >
+<script setup lang="ts">
 
 import MySign from "@/components/MySign/MySign.vue";
 import {ref} from "vue";
 
 
-const noCropRef=ref()
+const noCropRef=ref<HTMLElement>()
 const noCropImg=ref(null)
 const createNoCropImage=()=>{
   noCropRef.value.handleConfirm()
@@ -12,16 +12,16 @@ const createNoCropImage=()=>{
 const clearNoCropImage=()=>{
   noCropRef.value.resetDraw()
 }
-const handleNoCropImg = (fileImg) => {
+const handleNoCropImg = (fileImg: any) => {
   noCropImg.value=fileImg
 }
 
-const cropRef=ref()
+const cropRef=ref<HTMLElement>()
 const cropImg=ref(null)
 const createCropImage=()=>{
   cropRef.value.handleConfirm()
 }
-const handleCropImg = (fileImg) => {
+const handleCropImg = (fileImg: any) => {
   cropImg.value=fileImg
 }
 const clearCropImage=()=>{

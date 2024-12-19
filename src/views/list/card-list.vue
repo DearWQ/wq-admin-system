@@ -22,7 +22,7 @@
                 overflow: 'hidden',
               }"
             >
-              <img alt=""
+              <img
                 :style="{ height: '100%', 'object-fit': 'cover' }"
                 src="http://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/c788fc704d32cf3b1136c7d45afc2669.png~tplv-uwbnlip3yd-webp.webp"
               />
@@ -48,7 +48,7 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
   import { post } from '@/api/http'
   import { getCardList } from '@/api/url'
   import { usePagination, useTable } from '@/hooks/table'

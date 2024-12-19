@@ -2,9 +2,10 @@
   <div ref="eChartContainer" style="height: 180px; width: 100%"> </div>
 </template>
 
-<script >
+<script lang="ts">
   import useEcharts from '@/hooks/useEcharts'
   import { defineComponent, onMounted, ref, toRef } from 'vue'
+  import { EChartsCoreOption } from 'echarts/core'
 
   export default defineComponent({
     name: 'LineChart',
@@ -19,11 +20,11 @@
       },
     },
     setup(prop) {
-      const eChartContainer = ref(null)
+      const eChartContainer = ref<HTMLDivElement | null>(null)
       onMounted(() => {
         const options = toRef(prop, 'options')
-        const instance = useEcharts(eChartContainer.value )
-        instance.setOption(options.value )
+        const instance = useEcharts(eChartContainer.value as HTMLDivElement)
+        instance.setOption(options.value as EChartsCoreOption)
         instance.resize()
       })
       return {

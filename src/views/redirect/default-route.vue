@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script  setup>
+<script lang="ts" setup>
 import { onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { omit } from 'lodash-es'

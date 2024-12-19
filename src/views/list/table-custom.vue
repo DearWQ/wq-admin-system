@@ -40,10 +40,11 @@
   </div>
 </template>
 
-<script  setup>
+<script lang="ts" setup>
 import {post} from '@/api/http'
 import {getTableList} from '@/api/url'
 import {usePagination, useRowKey, useTable, useTableColumn} from '@/hooks/table'
+import {TablePropsType} from '@/types/components'
 import {sortColumns} from '@/utils'
 import {Message, Modal} from '@arco-design/web-vue'
 import {onMounted, reactive} from 'vue'
@@ -109,7 +110,7 @@ const tableColumns = reactive(
             key: 'delete',
             title: '删除',
             icon: 'icon-delete',
-            onClick: (item) => {
+            onClick: (item: any) => {
               onDeleteItem(item)
             }
           }
@@ -172,7 +173,7 @@ const tableConfig = reactive({
           slotName:'edit',
           type:'text',
           auth:()=>{return true},
-          onClick: (item) => {
+          onClick: (item: any) => {
             onDeleteItem(item)
           }
         },
@@ -181,7 +182,7 @@ const tableConfig = reactive({
           title: '编辑',
           type:'text',
           auth:()=>{return true},
-          onClick: (item) => {
+          onClick: (item: any) => {
             onDeleteItem(item)
           }
         },
@@ -190,7 +191,7 @@ const tableConfig = reactive({
           title: '编辑',
           type:'text',
           auth:()=>{return true},
-          onClick: (item) => {
+          onClick: (item: any) => {
             onDeleteItem(item)
           }
         },{
@@ -198,7 +199,7 @@ const tableConfig = reactive({
           title: '编辑',
           type:'text',
           auth:()=>{return true},
-          onClick: (item) => {
+          onClick: (item: any) => {
             onDeleteItem(item)
           }
         },
@@ -207,7 +208,7 @@ const tableConfig = reactive({
           title: '编辑',
           type:'text',
           auth:()=>{return true},
-          onClick: (item) => {
+          onClick: (item: any) => {
             onDeleteItem(item)
           }
         },
@@ -217,7 +218,7 @@ const tableConfig = reactive({
           title: '删除',
           type:'text',
           icon: 'IconDelete',
-          onClick: (item) => {
+          onClick: (item: any) => {
             onDeleteItem(item)
           }
         }
@@ -243,7 +244,7 @@ function doRefresh() {
       .catch(console.log)
 }
 
-function onDeleteItem(item) {
+function onDeleteItem(item: any) {
   if (item) {
     Modal.confirm({
       content: '是否要删除此数据，删除后不恢复？',
@@ -255,19 +256,19 @@ function onDeleteItem(item) {
   }
 }
 
-function onUpdateTable(newColumns) {
+function onUpdateTable(newColumns: Array<TablePropsType>) {
   sortColumns(tableColumns, newColumns)
 }
 
-function onUpdateBorder(isBordered) {
+function onUpdateBorder(isBordered: boolean) {
   bordered.value = isBordered
 }
 
-function onUpdateStriped(isStriped) {
+function onUpdateStriped(isStriped: boolean) {
   striped.value = isStriped
 }
 
-function rowClassNameFun(_record, index) {
+function rowClassNameFun(_record: any, index: number) {
   return index % 2 === 1 && striped.value ? 'table-striped' : null
 }
 

@@ -70,9 +70,9 @@
   </div>
 </template>
 
-<script  setup>
+<script lang="ts" setup>
   import { Message, Modal, Notification } from '@arco-design/web-vue'
-  function openConfirm(type) {
+  function openConfirm(type: string) {
     switch (type) {
       case 'warning':
         Modal.warning({
@@ -107,7 +107,7 @@
         break
     }
   }
-  function openMessage(type) {
+  function openMessage(type: string) {
     switch (type) {
       case 'info':
         Message.info('详细相信')
@@ -126,7 +126,7 @@
         break
     }
   }
-  function openNotification(type) {
+  function openNotification(type: string) {
     switch (type) {
       case 'info':
         Notification.info({

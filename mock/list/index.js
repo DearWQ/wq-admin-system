@@ -24,7 +24,7 @@ Mock.XHR.prototype.send = (() => {
 })()
 
 
-import { baseData } from '../base'
+import { baseData } from '../base.ts'
 import {
   getDepartmentList,
   getTableList,

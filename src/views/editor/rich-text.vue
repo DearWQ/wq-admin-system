@@ -25,7 +25,7 @@
   </div>
 </template>
 
-<script  setup>
+<script lang="ts" setup>
   import { ref } from 'vue'
   const richTextEditor = ref()
   const title = ref('')

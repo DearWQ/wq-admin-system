@@ -15,7 +15,7 @@
   <SearchContent ref="searchContentRef" />
 </template>
 
-<script  setup>
+<script lang="ts" setup>
   import { onBeforeUnmount, onMounted, ref } from 'vue'
   import useEmit from '@/hooks/useEmit'
   import useAppConfigStore from '@/store/modules/app-config'
@@ -23,11 +23,9 @@
   import usePrimaryColor from '@/hooks/usePrimaryColor'
   import useTheme from '@/hooks/useTheme'
   import { DeviceType } from '@/store/types'
-  import SideBar from "@/layouts/sidebar/SideBar.vue";
-  import MainLayout from "@/layouts/MainLayout.vue";
   const searchContentRef = ref()
   const appStore = useAppConfigStore()
-  useTheme(appStore.theme)
+  useTheme(appStore.theme as 'light' | 'dark')
   useChangeMenuWidth(appStore.sideWidth)
   usePrimaryColor(appStore.themeColor)
   const emitter = useEmit()

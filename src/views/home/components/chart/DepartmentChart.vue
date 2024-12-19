@@ -17,12 +17,12 @@
   </a-card>
 </template>
 
-<script setup>
+<script lang="ts" setup>
   import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
   import useEcharts from '@/hooks/useEcharts'
   import { dispose, graphic } from 'echarts/core'
   const loading = ref(true)
-  const departmentChart = ref(null)
+  const departmentChart = ref<HTMLDivElement | null>(null)
   const init = () => {
     const option = {
       tooltip: {
@@ -80,14 +80,14 @@
     setTimeout(() => {
       loading.value = false
       nextTick(() => {
-        const echartInstance = useEcharts(departmentChart.value)
+        const echartInstance = useEcharts(departmentChart.value as HTMLDivElement)
         echartInstance.setOption(option)
       })
     }, 1000)
   }
   onMounted(init)
   onBeforeUnmount(() => {
-    dispose(departmentChart.value)
+    dispose(departmentChart.value as HTMLDivElement)
   })
 </script>
 
