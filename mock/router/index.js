@@ -209,6 +209,11 @@ export const adminRoutes = [
         parentPath: '/other',
         menuUrl: '/other/ellipseTooltip',
         menuName: 'ellipseTooltip提示',
+      },
+      {
+        parentPath: '/other',
+        menuUrl: '/other/dragDom',
+        menuName: '伸缩dom',
       }
     ],
   },
