@@ -204,8 +204,8 @@ const dealDate =()=> {
         })
         break
       case '3':
-        const s_d = props.restrictDate[keys[0]] && props.restrictDate[keys[0]][1] || curDate
-        const e_d = props.restrictDate[keys[0]] && props.restrictDate[keys[0]][2] || curDate
+        const s_d = props.restrictDate[keys[0]] && props.restrictDate[keys[0]][0] || curDate
+        const e_d = props.restrictDate[keys[0]] && props.restrictDate[keys[0]][1] || curDate
         let s = new Date(s_d).getTime(),
             e = new Date(e_d).getTime()
         if (s > e) {
@@ -217,8 +217,8 @@ const dealDate =()=> {
         })
         break
       case '4':
-        const st_d = props.restrictDate[keys[0]] && props.restrictDate[keys[0]][1] || curDate
-        const en_d = props.restrictDate[keys[0]] && props.restrictDate[keys[0]][2] || curDate
+        const st_d = props.restrictDate[keys[0]] && props.restrictDate[keys[0]][0] || curDate
+        const en_d = props.restrictDate[keys[0]] && props.restrictDate[keys[0]][1] || curDate
         let st = new Date(st_d).getTime(),
             en = new Date(en_d).getTime()
         if (st > en) {
